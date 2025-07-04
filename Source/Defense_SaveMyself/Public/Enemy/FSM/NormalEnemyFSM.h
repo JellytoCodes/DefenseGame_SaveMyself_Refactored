@@ -75,12 +75,12 @@ protected :
 	void EquipWeapon();
 	//virtual void ReceiveDamage_Implementation(float Damage) override;
 
-	virtual void OnEnterIdle();
-	virtual void OnEnterPatrol();
-	virtual void OnEnterChase();
-	virtual void OnEnterAttack();
-	virtual void OnEnterDamage();
-	virtual void OnEnterDead();
+	void OnEnterIdle();
+	void OnEnterPatrol();
+	void OnEnterChase();
+	void OnEnterAttack();
+	void OnEnterDamage();
+	void OnEnterDead();
 
 	//State °ü¸®
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State")
