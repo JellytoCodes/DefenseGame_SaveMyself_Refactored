@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Data/SaveMyselfEnemyInfo.h"
 #include "NormalEnemyFSM.generated.h"
 
 class UNavigationInvokerComponent;
@@ -12,8 +13,8 @@ UENUM(BlueprintType)
 enum class EMonsterState : uint8
 {
     Idle,		//대기 상태
-    Patrol,		//목표 지점(맵끝) 이동
-    Chase,		//플레이어, 구조물 대상 추적
+    Patrol,		//목표 지점 이동
+    Chase,		//플레이어, 구조물 추적
     Attack,		//대상 공격
     Damage,		//피격 반응
     Dead,		//사망 처리
@@ -34,7 +35,7 @@ public:
 	void SetMonsterState(EMonsterState NewState); 
 	EMonsterState GetMonsterState() const { return curState; }
 
-	float GetAttackRange() const { return AttackRange;}
+	float GetAttackRange() const { return EnemyInformation.AttackRange;}
 
 protected : 
 	virtual void BeginPlay() override;
@@ -60,18 +61,12 @@ protected :
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	TObjectPtr<UAudioComponent> SoundOutComp;
 
-	float MaxHP;
-	float CurHP;
-	float MoveSpeed;
-	float AttackPower;
-	float AttackElapsedTime;
-	float AttackInterval;
-	float AttackRange;
-	//EMonsterType monsterType;
-	//EEliteAIType eliteAIType;
-	TObjectPtr<UStaticMesh> WeaponMesh;
+	UPROPERTY(EditDefaultsOnly, Category = "Data Table")
+	TObjectPtr<UDataTable> EnemyInfoTable;
 
-	void InitializeEnemyData();
+	FEnemyInformation EnemyInformation;
+
+	void InitializeEnemyInfo();
 	void EquipWeapon();
 	//virtual void ReceiveDamage_Implementation(float Damage) override;
 
@@ -82,7 +77,6 @@ protected :
 	void OnEnterDamage();
 	void OnEnterDead();
 
-	//State 관리
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State")
 	bool bIsDeath = false;
 

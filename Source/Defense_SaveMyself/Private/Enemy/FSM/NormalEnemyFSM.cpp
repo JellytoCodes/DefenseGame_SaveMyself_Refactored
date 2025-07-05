@@ -16,6 +16,8 @@ void UNormalEnemyFSM::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (EnemyInfoTable) InitializeEnemyInfo();
+
 	SetMonsterState(EMonsterState::Patrol);
 }
 
@@ -47,6 +49,7 @@ void UNormalEnemyFSM::OnEnterIdle()
 	    if (ANormalEnemyAIController* AICon = Cast<ANormalEnemyAIController>(OwnerPawn->GetController()))
 	    {
 	        AICon->HandleIdle();
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, FString::Printf(TEXT("Try Idle")));
 	    }
 	}
 }
@@ -69,6 +72,7 @@ void UNormalEnemyFSM::OnEnterChase()
 	    if (ANormalEnemyAIController* AICon = Cast<ANormalEnemyAIController>(OwnerPawn->GetController()))
 	    {
 	        AICon->HandleChase();
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, FString::Printf(TEXT("Try Chase")));
 	    }
 	}
 }
@@ -76,11 +80,12 @@ void UNormalEnemyFSM::OnEnterChase()
 void UNormalEnemyFSM::OnEnterAttack()
 {
 	bCanEvaluateState = false;
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, FString::Printf(TEXT("Try Attack")));
 }
 
 void UNormalEnemyFSM::OnEnterDamage()
 {
-
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Cyan, FString::Printf(TEXT("Try Damaged")));
 }
 
 void UNormalEnemyFSM::OnEnterDead()
@@ -122,7 +127,26 @@ void UNormalEnemyFSM::SetMonsterState(EMonsterState NewState)
 	}
 }
 
-void UNormalEnemyFSM::InitializeEnemyData()
+void UNormalEnemyFSM::InitializeEnemyInfo()
 {
+	if (APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+	{
+		FName EnemyName = OwnerPawn->Tags[1];
+		if (auto* FindEnemyData = EnemyInfoTable->FindRow<FEnemyInformation>(EnemyName, TEXT("")))
+		{
+			EnemyInformation.EnemyName = FindEnemyData->EnemyName;
+			EnemyInformation.EnemyType = FindEnemyData->EnemyType;
+			EnemyInformation.EliteType = FindEnemyData->EliteType;
+			EnemyInformation.MaxHP = FindEnemyData->MaxHP;
+			EnemyInformation.MoveSpeed = FindEnemyData->MoveSpeed;
+			EnemyInformation.AttackPower = FindEnemyData->AttackPower;
+			EnemyInformation.AttackInterval = FindEnemyData->AttackInterval;
+			EnemyInformation.AttackRange = FindEnemyData->AttackRange;
 
+			UE_LOG(LogTemp, Warning, TEXT("Monster Name [%s]"), *EnemyInformation.EnemyName.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("Monster Type [%d]"), EnemyInformation.EnemyType);
+			UE_LOG(LogTemp, Warning, TEXT("EliteAIType [%d]"), EnemyInformation.EliteType);
+			UE_LOG(LogTemp, Warning, TEXT("MaxHP [%.2f]"), EnemyInformation.MaxHP);
+		}
+	}
 }

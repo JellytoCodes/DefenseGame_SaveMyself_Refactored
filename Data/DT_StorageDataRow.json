@@ -1,0 +1,59 @@
+[
+	{
+		"Name": "Stage1_Weapon001",
+		"StageID": "Stage_01",
+		"ItemID": "Weapon001",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Weapon001_DisplayName\", \"Knife\")",
+		"Quantity": 6
+	},
+	{
+		"Name": "Stage1_Structure001",
+		"StageID": "Stage_01",
+		"ItemID": "Structure001",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Structure001_DisplayName\", \"WoodBox\")",
+		"Quantity": 1
+	},
+	{
+		"Name": "Stage1_Trap001",
+		"StageID": "Stage_01",
+		"ItemID": "Trap001",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Trap001_DisplayName\", \"BindTrap\")",
+		"Quantity": 1
+	},
+
+	{
+		"Name": "Stage2_Weapon001",
+		"StageID": "Stage_02",
+		"ItemID": "Weapon001",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Weapon001_DisplayName\", \"Knife\")",
+		"Quantity": 8
+	},
+	{
+		"Name": "Stage2_Weapon002",
+		"StageID": "Stage_02",
+		"ItemID": "Weapon002",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Weapon002_DisplayName\", \"Boom\")",
+		"Quantity": 1
+	},
+	{
+		"Name": "Stage2_Structure001",
+		"StageID": "Stage_02",
+		"ItemID": "Structure001",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Structure001_DisplayName\", \"WoodBox\")",
+		"Quantity": 2
+	},
+	{
+		"Name": "Stage2_Trap001",
+		"StageID": "Stage_02",
+		"ItemID": "Trap001",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Trap001_DisplayName\", \"BindTrap\")",
+		"Quantity": 1
+	},
+	{
+		"Name": "Stage2_Trap002",
+		"StageID": "Stage_02",
+		"ItemID": "Trap002",
+		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Trap002_DisplayName\", \"ExplosiveTrap\")",
+		"Quantity": 1
+	}
+]

@@ -1,0 +1,41 @@
+[
+	{
+		"Name": "MinionAxe",
+		"EnemyName": "MinionAxe",
+		"EnemyType": "Normal",
+		"EliteType": "None",
+		"MaxHP": 5,
+		"MoveSpeed": 300,
+		"AttackPower": 5,
+		"AttackInterval": 3,
+		"AttackRange": 200,
+		"WeaponMesh": "/Script/Engine.StaticMesh'/Game/Asset/KayKit/DungeonElements/axe_common.axe_common'",
+		"EnemyClass": "nullptr"
+	},
+	{
+		"Name": "MinionHammer",
+		"EnemyName": "MinionHammer",
+		"EnemyType": "Normal",
+		"EliteType": "None",
+		"MaxHP": 10,
+		"MoveSpeed": 200,
+		"AttackPower": 10,
+		"AttackInterval": 3,
+		"AttackRange": 200,
+		"WeaponMesh": "/Script/Engine.StaticMesh'/Game/Asset/KayKit/DungeonElements/hammer_common.hammer_common'",
+		"EnemyClass": "nullptr"
+	},
+	{
+		"Name": "Destroyer",
+		"EnemyName": "Destroyer",
+		"EnemyType": "Elite",
+		"EliteType": "Destroyer",
+		"MaxHP": 30,
+		"MoveSpeed": 200,
+		"AttackPower": 20,
+		"AttackInterval": 5,
+		"AttackRange": 250,
+		"WeaponMesh": "/Script/Engine.StaticMesh'/Game/Asset/KayKit/DungeonElements/hammer_rare.hammer_rare'",
+		"EnemyClass": "nullptr"
+	}
+]

@@ -1,0 +1,58 @@
+[
+	{
+		"Name": "Weapon001",
+		"ItemName": "Knife",
+		"ItemType": "Weapon",
+		"ItemIcon": "None",
+		"EffectValue": 10,
+		"EffectType": "SingleDamage",
+		"ItemClass": "nullptr",
+		"ItemWeight": 1,
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
+		"NameDisplay": "아이템 이름",
+		"Description": "아이템 설명",
+		"TypeDisplay": "아이템 타입"
+	},
+	{
+		"Name": "Weapon002",
+		"ItemName": "Bomb",
+		"ItemType": "Weapon",
+		"ItemIcon": "None",
+		"EffectValue": 5,
+		"EffectType": "Explosive",
+		"ItemClass": "nullptr",
+		"ItemWeight": 1,
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
+		"NameDisplay": "아이템 이름",
+		"Description": "아이템 설명",
+		"TypeDisplay": "아이템 타입"
+	},
+	{
+		"Name": "Trap001",
+		"ItemName": "BindTrap",
+		"ItemType": "Trap",
+		"ItemIcon": "None",
+		"EffectValue": 5,
+		"EffectType": "Bind",
+		"ItemClass": "nullptr",
+		"ItemWeight": 1,
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
+		"NameDisplay": "아이템 이름",
+		"Description": "아이템 설명",
+		"TypeDisplay": "아이템 타입"
+	},
+	{
+		"Name": "Structure001",
+		"ItemName": "Box",
+		"ItemType": "Structure",
+		"ItemIcon": "None",
+		"EffectValue": 20,
+		"EffectType": "Bind",
+		"ItemClass": "nullptr",
+		"ItemWeight": 1,
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
+		"NameDisplay": "아이템 이름",
+		"Description": "아이템 설명",
+		"TypeDisplay": "아이템 타입"
+	}
+]
