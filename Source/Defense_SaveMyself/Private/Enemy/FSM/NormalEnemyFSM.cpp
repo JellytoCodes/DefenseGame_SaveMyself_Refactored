@@ -1,9 +1,11 @@
 
 #include "Enemy/FSM/NormalEnemyFSM.h"
 #include "NavigationInvokerComponent.h"
+#include "Character/SaveMyselfEnemy.h"
 #include "Engine/Engine.h"
 
 #include "Enemy/AIController/NormalEnemyAIController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 UNormalEnemyFSM::UNormalEnemyFSM()
@@ -27,7 +29,7 @@ void UNormalEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	if(bCanEvaluateState)
 	{
-		if (APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+		if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 		{
 		    if (ANormalEnemyAIController* AICon = Cast<ANormalEnemyAIController>(OwnerPawn->GetController()))
 		    {
@@ -44,7 +46,7 @@ void UNormalEnemyFSM::EquipWeapon()
 
 void UNormalEnemyFSM::OnEnterIdle()
 {
-	if (APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+	if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 	{
 	    if (ANormalEnemyAIController* AICon = Cast<ANormalEnemyAIController>(OwnerPawn->GetController()))
 	    {
@@ -56,7 +58,7 @@ void UNormalEnemyFSM::OnEnterIdle()
 
 void UNormalEnemyFSM::OnEnterPatrol()
 {
-	if (APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+	if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 	{
 	    if (ANormalEnemyAIController* AICon = Cast<ANormalEnemyAIController>(OwnerPawn->GetController()))
 	    {
@@ -67,7 +69,7 @@ void UNormalEnemyFSM::OnEnterPatrol()
 
 void UNormalEnemyFSM::OnEnterChase()
 {
-	if (APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+	if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 	{
 	    if (ANormalEnemyAIController* AICon = Cast<ANormalEnemyAIController>(OwnerPawn->GetController()))
 	    {
@@ -129,7 +131,7 @@ void UNormalEnemyFSM::SetMonsterState(EMonsterState NewState)
 
 void UNormalEnemyFSM::InitializeEnemyInfo()
 {
-	if (APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+	if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 	{
 		FName EnemyName = OwnerPawn->Tags[1];
 		if (auto* FindEnemyData = EnemyInfoTable->FindRow<FEnemyInformation>(EnemyName, TEXT("")))
@@ -147,6 +149,8 @@ void UNormalEnemyFSM::InitializeEnemyInfo()
 			UE_LOG(LogTemp, Warning, TEXT("Monster Type [%d]"), EnemyInformation.EnemyType);
 			UE_LOG(LogTemp, Warning, TEXT("EliteAIType [%d]"), EnemyInformation.EliteType);
 			UE_LOG(LogTemp, Warning, TEXT("MaxHP [%.2f]"), EnemyInformation.MaxHP);
+
+			OwnerPawn->GetCharacterMovement()->MaxWalkSpeed = EnemyInformation.MoveSpeed;
 		}
 	}
 }
