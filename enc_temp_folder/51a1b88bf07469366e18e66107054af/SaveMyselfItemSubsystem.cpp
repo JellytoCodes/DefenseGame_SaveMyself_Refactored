@@ -60,6 +60,8 @@ void USaveMyselfItemSubsystem::AddItem(const FWidgetSlotDataInfo& NewItem)
 		}
 	}
 
+
+
 	PlayerQuickSlotData.Add(FWidgetSlotDataInfo
 	{
 		.ItemName = NewItem.ItemName,

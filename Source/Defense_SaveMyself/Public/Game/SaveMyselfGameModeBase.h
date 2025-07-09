@@ -7,6 +7,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "SaveMyselfGameModeBase.generated.h"
 
+class UDataTable;
 class USaveMyselfStageInfo;
 
 UCLASS()
@@ -16,6 +17,10 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfGameModeBase : public AGameModeBase
 
 public :
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
+	const USaveMyselfStageInfo* GetStageInfoAsset() const { return StageInfoAsset; }
+
+protected :
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game Setup")
 	TArray<TObjectPtr<USaveMyselfStageInfo>> StageAssets;

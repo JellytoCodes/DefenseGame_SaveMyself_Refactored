@@ -35,5 +35,8 @@ public :
 	float ActionTime;
 
 	UPROPERTY(EditDefaultsOnly, Category = "StageData")
+	float MaxBagWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "StageData")
 	TArray<FStageItemInfo> SetStageItem;
 };

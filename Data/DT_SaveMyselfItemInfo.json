@@ -1,7 +1,7 @@
 [
 	{
-		"Name": "Weapon001",
-		"ItemName": "Knife",
+		"Name": "Dangger",
+		"ItemName": "Dangger",
 		"ItemType": "Weapon",
 		"ItemIcon": "None",
 		"EffectValue": 10,
@@ -9,12 +9,12 @@
 		"ItemClass": "nullptr",
 		"ItemWeight": 1,
 		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
-		"NameDisplay": "아이템 이름",
-		"Description": "아이템 설명",
-		"TypeDisplay": "아이템 타입"
+		"NameDisplay": "단검",
+		"Description": "투척용 단검으로 적에게 강한 데미지를 입힙니다.",
+		"TypeDisplay": "무기"
 	},
 	{
-		"Name": "Weapon002",
+		"Name": "Bomb",
 		"ItemName": "Bomb",
 		"ItemType": "Weapon",
 		"ItemIcon": "None",
@@ -23,12 +23,12 @@
 		"ItemClass": "nullptr",
 		"ItemWeight": 1,
 		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
-		"NameDisplay": "아이템 이름",
-		"Description": "아이템 설명",
-		"TypeDisplay": "아이템 타입"
+		"NameDisplay": "폭탄",
+		"Description": "투척용 폭탄으로 적들에게 약한 데미지를 입힙니다.",
+		"TypeDisplay": "무기"
 	},
 	{
-		"Name": "Trap001",
+		"Name": "BindTrap",
 		"ItemName": "BindTrap",
 		"ItemType": "Trap",
 		"ItemIcon": "None",
@@ -37,12 +37,12 @@
 		"ItemClass": "nullptr",
 		"ItemWeight": 1,
 		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
-		"NameDisplay": "아이템 이름",
-		"Description": "아이템 설명",
-		"TypeDisplay": "아이템 타입"
+		"NameDisplay": "속박 함정",
+		"Description": "설치형 속박 함정으로 일정 시간동안 적을 묶습니다.",
+		"TypeDisplay": "함정"
 	},
 	{
-		"Name": "Structure001",
+		"Name": "Box",
 		"ItemName": "Box",
 		"ItemType": "Structure",
 		"ItemIcon": "None",
@@ -51,8 +51,8 @@
 		"ItemClass": "nullptr",
 		"ItemWeight": 1,
 		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common",
-		"NameDisplay": "아이템 이름",
-		"Description": "아이템 설명",
-		"TypeDisplay": "아이템 타입"
+		"NameDisplay": "박스",
+		"Description": "적의 진로를 차단하기 위한 박스입니다.",
+		"TypeDisplay": "구조물"
 	}
 ]

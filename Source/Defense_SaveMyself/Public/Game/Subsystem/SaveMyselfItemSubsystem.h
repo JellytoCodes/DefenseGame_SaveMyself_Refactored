@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -20,6 +18,9 @@ struct FWidgetSlotDataInfo
 	int32 Quantity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
+	UTexture2D* ItemIcon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
 	FText NameDisplay;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
@@ -28,6 +29,8 @@ struct FWidgetSlotDataInfo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
 	FText TypeDisplay;
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerQuickSlotUpdateSignature);
 
 UCLASS()
 class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UGameInstanceSubsystem
@@ -39,10 +42,16 @@ public :
 	void BuildCache(const USaveMyselfStageInfo* StageAsset);
 	void SetDataTable(UDataTable* DataTable);
 
-	const TArray<FWidgetSlotDataInfo>& GetWidgetSlotInfo() const { return WidgetSlotInfo; }
+	const TArray<FWidgetSlotDataInfo>& GetWarehouseSlotInfoInfo() const { return WarehouseSlotInfo; }
+	const TArray<FWidgetSlotDataInfo>& GetPlayerQuickSlotData() const { return PlayerQuickSlotData; }
 
 	UFUNCTION(BlueprintPure, meta =(WorldContext="WorldContext"))
 	static USaveMyselfItemSubsystem* GetItemSubSystem(const UObject* WorldContext);
+
+	void AddItem(const FWidgetSlotDataInfo& NewItem);
+
+	UPROPERTY(BlueprintAssignable, Category = "Subsystem|Delegate")
+	FPlayerQuickSlotUpdateSignature PlayerQuickSlotUpdateDelegate;
 
 protected :
 	template<typename T>
@@ -53,7 +62,8 @@ protected :
 
 	TArray<FItemInformation> StageItemCache;
 	TArray<FStageItemInfo> StageItemInfo;
-	TArray<FWidgetSlotDataInfo> WidgetSlotInfo;
+	TArray<FWidgetSlotDataInfo> WarehouseSlotInfo;
+	TArray<FWidgetSlotDataInfo> PlayerQuickSlotData;
 };
 
 template <typename T>
