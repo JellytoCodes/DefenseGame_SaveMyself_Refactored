@@ -19,11 +19,6 @@ void USaveMyselfWidgetController::AddItemWarehouseWidget(UWrapBox* WrapBox)
 				if (Data.IsValidIndex(i))
 				{
 					Slot->SetItemData(Data[i]);
-					Slot->SetVisibility(ESlateVisibility::Visible);
-				}
-				else
-				{
-					Slot->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
 		}
@@ -61,11 +56,6 @@ void USaveMyselfWidgetController::AddItemPlayerQuickSlotWidget(UWrapBox* WrapBox
 				if (Data.IsValidIndex(i))
 				{
 					Slot->SetItemData(Data[i]);
-					Slot->SetVisibility(ESlateVisibility::Visible);
-				}
-				else
-				{
-					Slot->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
 		}

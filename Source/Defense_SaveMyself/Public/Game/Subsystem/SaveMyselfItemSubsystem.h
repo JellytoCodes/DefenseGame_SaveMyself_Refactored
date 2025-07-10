@@ -18,7 +18,7 @@ struct FWidgetSlotDataInfo
 	int32 Quantity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
-	UTexture2D* ItemIcon;
+	TObjectPtr<UTexture2D> ItemIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
 	FText NameDisplay;
@@ -30,7 +30,7 @@ struct FWidgetSlotDataInfo
 	FText TypeDisplay;
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerQuickSlotUpdateSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FItemDataUpdateSignature);
 
 UCLASS()
 class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UGameInstanceSubsystem
@@ -50,8 +50,11 @@ public :
 
 	void AddItem(const FWidgetSlotDataInfo& NewItem);
 
-	UPROPERTY(BlueprintAssignable, Category = "Subsystem|Delegate")
-	FPlayerQuickSlotUpdateSignature PlayerQuickSlotUpdateDelegate;
+	UPROPERTY(BlueprintAssignable, Category = "Subsystem|AddItem")
+	FItemDataUpdateSignature AddItemDataDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "Subsystem|DecrementItem")
+	FItemDataUpdateSignature DecrementItemDataDelegate;
 
 protected :
 	template<typename T>

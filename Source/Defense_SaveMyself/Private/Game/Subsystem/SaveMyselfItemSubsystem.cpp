@@ -50,24 +50,38 @@ USaveMyselfItemSubsystem* USaveMyselfItemSubsystem::GetItemSubSystem(const UObje
 
 void USaveMyselfItemSubsystem::AddItem(const FWidgetSlotDataInfo& NewItem)
 {
+	for (auto& WarehouseData : WarehouseSlotInfo)
+	{
+		if (WarehouseData.ItemName == NewItem.ItemName && WarehouseData.Quantity > 0)
+		{
+			WarehouseData.Quantity--;
+			break;
+		}
+	}
+
+	bool bIsNewItem = true;
 	for (auto& PlayerData : PlayerQuickSlotData)
 	{
 		if (PlayerData.ItemName == NewItem.ItemName)
 		{
 			PlayerData.Quantity++;
-			PlayerQuickSlotUpdateDelegate.Broadcast();
-			return;
+			bIsNewItem = false;
+			break;
 		}
 	}
-
-	PlayerQuickSlotData.Add(FWidgetSlotDataInfo
-	{
-		.ItemName = NewItem.ItemName,
-		.Quantity = 1,
-		.NameDisplay = NewItem.NameDisplay,
-		.Description = NewItem.Description,
-		.TypeDisplay = NewItem.TypeDisplay
-	});
 	
-	PlayerQuickSlotUpdateDelegate.Broadcast();
+	if (bIsNewItem)
+	{
+		PlayerQuickSlotData.Add(FWidgetSlotDataInfo
+		{
+			.ItemName = NewItem.ItemName,
+			.Quantity = 1,
+			.ItemIcon = NewItem.ItemIcon,
+			.NameDisplay = NewItem.NameDisplay,
+			.Description = NewItem.Description,
+			.TypeDisplay = NewItem.TypeDisplay
+		});	
+	}
+
+	AddItemDataDelegate.Broadcast();
 }
