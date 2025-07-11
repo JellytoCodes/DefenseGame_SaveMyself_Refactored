@@ -4,6 +4,8 @@
 #include "Character/SaveMyselfCharacterBase.h"
 #include "SaveMyselfCharacter.generated.h"
 
+class UActorSpawnComponent;
+
 UCLASS()
 class DEFENSE_SAVEMYSELF_API ASaveMyselfCharacter : public ASaveMyselfCharacterBase
 {
@@ -15,4 +17,8 @@ public :
 protected :
 	virtual void BeginPlay() override;
 	virtual void InitializeCharacterInfo() override;
+
+private :
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpawnActorComponent", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UActorSpawnComponent> ActorSpawnComponent;
 };

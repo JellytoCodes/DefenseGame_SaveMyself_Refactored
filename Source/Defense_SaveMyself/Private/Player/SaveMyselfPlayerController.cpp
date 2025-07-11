@@ -2,6 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 
 ASaveMyselfPlayerController::ASaveMyselfPlayerController()
 {
@@ -20,12 +21,18 @@ void ASaveMyselfPlayerController::BeginPlay()
 
 	check(SaveMyselfContext)
 
-	auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	if (Subsystem)
+	if (auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
-		Subsystem->AddMappingContext(SaveMyselfContext, 0);
+		if (Subsystem)
+		{
+			Subsystem->AddMappingContext(SaveMyselfContext, 0);
+		}
 	}
 
+	if (USaveMyselfItemSubsystem* ItemSubsystem = GetGameInstance()->GetSubsystem<USaveMyselfItemSubsystem>())
+	{
+		this->ExportQuickSlotIndexDelegate.AddDynamic(ItemSubsystem, &USaveMyselfItemSubsystem::GetQuickSlotIndexItemData);
+	}
 }
 
 void ASaveMyselfPlayerController::SetupInputComponent()
@@ -37,7 +44,16 @@ void ASaveMyselfPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASaveMyselfPlayerController::Move);
 	EnhancedInputComponent->BindAction(LookNTurnAction, ETriggerEvent::Triggered, this, &ASaveMyselfPlayerController::LookNTurn);
 	EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::ViewPause);
-	EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::Interaction);
+	EnhancedInputComponent->BindAction(ConfirmAction, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::Confirm);
+
+	EnhancedInputComponent->BindAction(QuickSlot01, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot1);
+	EnhancedInputComponent->BindAction(QuickSlot02, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot2);
+	EnhancedInputComponent->BindAction(QuickSlot03, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot3);
+	EnhancedInputComponent->BindAction(QuickSlot04, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot4);
+	EnhancedInputComponent->BindAction(QuickSlot05, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot5);
+	EnhancedInputComponent->BindAction(QuickSlot06, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot6);
+	EnhancedInputComponent->BindAction(QuickSlot07, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot7);
+	EnhancedInputComponent->BindAction(QuickSlot08, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot8);
 
 }
 
@@ -69,11 +85,53 @@ void ASaveMyselfPlayerController::LookNTurn(const FInputActionValue& InputAction
 
 void ASaveMyselfPlayerController::ViewPause()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf("ViewPause"));
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf(TEXT("ViewPause")));
 }
 
-void ASaveMyselfPlayerController::Interaction()
+void ASaveMyselfPlayerController::Confirm()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf("Interaction"));
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf(TEXT("Interaction")));
+	ItemConfirmActionDelegate.Broadcast();
 }
+
+void ASaveMyselfPlayerController::SetQuickSlot1()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(0);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot2()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(1);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot3()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(2);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot4()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(3);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot5()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(4);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot6()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(5);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot7()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(6);
+}
+
+void ASaveMyselfPlayerController::SetQuickSlot8()
+{
+	ExportQuickSlotIndexDelegate.Broadcast(7);
+}
+
 

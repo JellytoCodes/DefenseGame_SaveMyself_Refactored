@@ -19,18 +19,24 @@ class DEFENSE_SAVEMYSELF_API USaveMyselfWidgetController : public UObject
 public :
 	/** Warehouse */
 	UFUNCTION(BlueprintCallable, Category = "UI|Warehouse")
-	void AddItemWarehouseWidget(UWrapBox* WrapBox);
+	void UpdateWarehouseWidget(UWrapBox* WrapBox);
 
 
 	UFUNCTION(BlueprintCallable, Category = "UI|Warehouse")
 	const float GetMaxBagWeight() const;
 
+	UFUNCTION(BlueprintCallable, Category = "UI|Warehouse")
+	const float GetCurrentBagWeight() const;
+
 	/** Player QuickSlot */
 	UFUNCTION(BlueprintCallable, Category = "UI|PlayerQuickSlot")
-	void AddItemPlayerQuickSlotWidget(UWrapBox* WrapBox);
+	void UpdatePlayerQuickSlotWidget(UWrapBox* WrapBox);
 
 	UFUNCTION(BlueprintCallable, Category = "UI|PlayerQuickSlot")
 	void UpdateAddPlayerItemData(const FWidgetSlotDataInfo& UpdateItem);
+
+	UFUNCTION(BlueprintCallable, Category = "UI|PlayerQuickSlot")
+	void UpdateRemovePlayerItemData(const FWidgetSlotDataInfo& UpdateItem);
 
 	FOnSlotDataInfoSigniture OnSlotDataInfoDelegate;
 };

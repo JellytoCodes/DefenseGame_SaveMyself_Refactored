@@ -5,7 +5,7 @@
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 #include "UI/Widget/SavemyselfUserWidget.h"
 
-void USaveMyselfWidgetController::AddItemWarehouseWidget(UWrapBox* WrapBox)
+void USaveMyselfWidgetController::UpdateWarehouseWidget(UWrapBox* WrapBox)
 {
 	if (const auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 	{
@@ -19,6 +19,10 @@ void USaveMyselfWidgetController::AddItemWarehouseWidget(UWrapBox* WrapBox)
 				if (Data.IsValidIndex(i))
 				{
 					Slot->SetItemData(Data[i]);
+				}
+				else
+				{
+					return;
 				}
 			}
 		}
@@ -34,6 +38,15 @@ const float USaveMyselfWidgetController::GetMaxBagWeight() const
 	return 0;
 }
 
+const float USaveMyselfWidgetController::GetCurrentBagWeight() const
+{
+	if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
+	{
+		return ItemSubsystem->GetCurrentBagWeight();
+	}
+	return 0;
+}
+
 void USaveMyselfWidgetController::UpdateAddPlayerItemData(const FWidgetSlotDataInfo& UpdateItem)
 {
 	if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
@@ -42,7 +55,15 @@ void USaveMyselfWidgetController::UpdateAddPlayerItemData(const FWidgetSlotDataI
 	}
 }
 
-void USaveMyselfWidgetController::AddItemPlayerQuickSlotWidget(UWrapBox* WrapBox)
+void USaveMyselfWidgetController::UpdateRemovePlayerItemData(const FWidgetSlotDataInfo& UpdateItem)
+{
+	if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
+	{
+		ItemSubsystem->DecrementItem(UpdateItem);
+	}
+}
+
+void USaveMyselfWidgetController::UpdatePlayerQuickSlotWidget(UWrapBox* WrapBox)
 {
 	if (const auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 	{
@@ -56,6 +77,10 @@ void USaveMyselfWidgetController::AddItemPlayerQuickSlotWidget(UWrapBox* WrapBox
 				if (Data.IsValidIndex(i))
 				{
 					Slot->SetItemData(Data[i]);
+				}
+				else
+				{
+					return;
 				}
 			}
 		}
