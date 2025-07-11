@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "DrawDebugHelpers.h"
+#include "Player/SaveMyselfPlayerController.h"
 
 UActorSpawnComponent::UActorSpawnComponent()
 {
@@ -19,6 +20,14 @@ void UActorSpawnComponent::BeginPlay()
 	if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 	{
 		ItemSubsystem->ExportItemDataDelegate.AddDynamic(this, &UActorSpawnComponent::GetSpawnItemData);
+	}
+
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		if (ASaveMyselfPlayerController* SMPController = Cast<ASaveMyselfPlayerController>(PC))
+		{
+			SMPController->ItemConfirmActionDelegate.AddDynamic(this, &UActorSpawnComponent::ConfirmPlacement);
+		}
 	}
 }
 
@@ -51,7 +60,15 @@ void UActorSpawnComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 void UActorSpawnComponent::GetSpawnItemData(const FItemInformation& ItemData)
 {
 	SpawnItemData = ItemData;
-	if (SpawnItemData.ItemType == EItemTypes::Weapon) return;
+	if (SpawnItemData.ItemType == EItemTypes::Weapon || SpawnItemData.ItemType == EItemTypes::None)
+	{
+		if (PreviewActor)
+		{
+			PreviewActor->Destroy();
+			PreviewActor = nullptr;
+		}
+		return;
+	}
 
 	CreatePreviewActor();
 }
@@ -102,10 +119,21 @@ bool UActorSpawnComponent::TraceToGround(FHitResult& HitResult) const
 
 void UActorSpawnComponent::ConfirmPlacement()
 {
-	if (!PreviewActor) return;
+	if (SpawnItemData.ItemType == EItemTypes::Weapon)
+	{
+		// TODO.
+		// Weapon 타입 아이템 일 경우 SpawnProjectile() 호출
+		// 손에서 나가는 것으로 진행
+		// AnimNotify로 위치 조정
+	}
+	else
+	{
+		if (!PreviewActor) return;
 
-	PreviewActor->SetActorEnableCollision(true);
-	PreviewActor = nullptr;
+		PreviewActor->SetActorEnableCollision(true);
+		PreviewActor = nullptr;
 
-	// 여기에서 Subsystem 호출하여 수량 감소 요청할 수 있음
+		ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
+		SpawnItemData = FItemInformation();	
+	}
 }

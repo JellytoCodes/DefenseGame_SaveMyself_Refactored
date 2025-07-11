@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "SaveMyselfItemSubsystem.generated.h"
 
+class UActorSpawnComponent;
+
 USTRUCT(BlueprintType)
 struct FWidgetSlotDataInfo
 {
@@ -41,6 +43,7 @@ class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UGameInstanceSubs
 	GENERATED_BODY()
 
 public :
+
 	void BuildCache(const USaveMyselfStageInfo* StageAsset);
 	void SetDataTable(UDataTable* DataTable);
 
@@ -53,9 +56,14 @@ public :
 
 	void AddItem(const FWidgetSlotDataInfo& NewItem);
 	void DecrementItem(const FWidgetSlotDataInfo& RemoveItem);
-	
+
+	UFUNCTION()
+	void UseItem(const FItemInformation& InUseItem);
+
 	UFUNCTION()
 	void GetQuickSlotIndexItemData(const int32 SlotIndex);
+
+	void RegisterSpawnComponent(UActorSpawnComponent* SpawnComp);
 
 	UPROPERTY(BlueprintAssignable, Category = "Subsystem|AddItem")
 	FItemDataUpdateSignature AddItemDataDelegate;
@@ -69,7 +77,11 @@ public :
 	UPROPERTY(BlueprintAssignable, Category = "Subsystem|ExportData")
 	FExportItemDataDelegate ExportItemDataDelegate;
 
-protected :
+protected :	
+
+	UFUNCTION()
+	void HandleActorSpawnConfirmed(const FItemInformation& SPawnedItem);
+
 	template<typename T>
 	T* GetItemDataRow(FName ItemName) const;
 

@@ -2,17 +2,12 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/ActorSpawnComponent.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 
 ASaveMyselfPlayerController::ASaveMyselfPlayerController()
 {
 	
-}
-
-void ASaveMyselfPlayerController::PlayerTick(float DeltaTime)
-{
-	Super::PlayerTick(DeltaTime);
-
 }
 
 void ASaveMyselfPlayerController::BeginPlay()
@@ -32,6 +27,14 @@ void ASaveMyselfPlayerController::BeginPlay()
 	if (USaveMyselfItemSubsystem* ItemSubsystem = GetGameInstance()->GetSubsystem<USaveMyselfItemSubsystem>())
 	{
 		this->ExportQuickSlotIndexDelegate.AddDynamic(ItemSubsystem, &USaveMyselfItemSubsystem::GetQuickSlotIndexItemData);
+
+		if (APawn* PlayerPawn = GetPawn())
+		{
+			if (UActorSpawnComponent* SpawnComp = PlayerPawn->FindComponentByClass<UActorSpawnComponent>())
+			{
+				ItemSubsystem->RegisterSpawnComponent(SpawnComp);
+			}
+		}
 	}
 }
 
@@ -90,7 +93,6 @@ void ASaveMyselfPlayerController::ViewPause()
 
 void ASaveMyselfPlayerController::Confirm()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf(TEXT("Interaction")));
 	ItemConfirmActionDelegate.Broadcast();
 }
 
