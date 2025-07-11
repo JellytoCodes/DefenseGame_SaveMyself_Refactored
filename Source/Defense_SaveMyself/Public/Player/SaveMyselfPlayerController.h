@@ -19,9 +19,10 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfPlayerController : public APlayerControl
 
 public :
 	ASaveMyselfPlayerController();
-	virtual void PlayerTick(float DeltaTime) override;
 
+	UPROPERTY(BlueprintAssignable)
 	FExportQuickSlotIndexDelegate ExportQuickSlotIndexDelegate;
+
 	FItemConfirmActionDelegate ItemConfirmActionDelegate;
 
 protected :

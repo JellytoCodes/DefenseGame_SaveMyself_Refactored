@@ -54,7 +54,7 @@ struct FItemInformation : public FTableRowBase
 	TSubclassOf<ASaveMyselfActor> ItemClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
-	float ItemWeight = 0.f;
+	float ItemWeight;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	UStaticMesh* ItemMesh;

@@ -7,7 +7,7 @@
 #include "Data/SaveMyselfItemInfo.h"
 #include "ActorSpawnComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FConfirmActorSpawnDelegate);
+DECLARE_MULTICAST_DELEGATE_OneParam(FConfirmActorSpawnDelegate, const FItemInformation& /** SpawnItemData */);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DEFENSE_SAVEMYSELF_API UActorSpawnComponent : public UActorComponent
@@ -18,7 +18,10 @@ public :
 	UActorSpawnComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION()
 	void ConfirmPlacement();
+
+	FConfirmActorSpawnDelegate ConfirmActorSpawnDelegate;
 
 protected :
 	virtual void BeginPlay() override;

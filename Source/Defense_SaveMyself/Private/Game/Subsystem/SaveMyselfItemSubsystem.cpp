@@ -3,7 +3,37 @@
 
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 
+#include "Components/ActorSpawnComponent.h"
 #include "Engine/Engine.h"
+
+void USaveMyselfItemSubsystem::RegisterSpawnComponent(UActorSpawnComponent* SpawnComp)
+{
+	if (SpawnComp)
+	{
+		SpawnComp->ConfirmActorSpawnDelegate.AddUObject(this, &USaveMyselfItemSubsystem::HandleActorSpawnConfirmed);
+	}
+}
+
+void USaveMyselfItemSubsystem::HandleActorSpawnConfirmed(const FItemInformation& SPawnedItem)
+{
+	for (int32 i = 0 ; i < PlayerQuickSlotData.Num() ; ++i)
+	{
+		if (PlayerQuickSlotData[i].ItemName == SPawnedItem.ItemName)
+		{
+			if (PlayerQuickSlotData[i].Quantity > 1)
+			{
+				PlayerQuickSlotData[i].Quantity--;
+			}
+			else
+			{
+				PlayerQuickSlotData.RemoveAt(i);		
+			}
+			break;
+		}
+	}
+
+	UseItemDataDelegate.Broadcast();
+}
 
 void USaveMyselfItemSubsystem::BuildCache(const USaveMyselfStageInfo* StageAsset)
 {
@@ -125,10 +155,16 @@ void USaveMyselfItemSubsystem::DecrementItem(const FWidgetSlotDataInfo& RemoveIt
 	DecrementItemDataDelegate.Broadcast();
 }
 
+void USaveMyselfItemSubsystem::UseItem(const FItemInformation& InUseItem)
+{
+
+}
+
 void USaveMyselfItemSubsystem::GetQuickSlotIndexItemData(const int32 SlotIndex)
 {
 	if (!PlayerQuickSlotData.IsValidIndex(SlotIndex))
 	{
+		ExportItemDataDelegate.Broadcast(FItemInformation());
 		return;
 	}
 
@@ -140,5 +176,6 @@ void USaveMyselfItemSubsystem::GetQuickSlotIndexItemData(const int32 SlotIndex)
 		ExportItemDataDelegate.Broadcast(*FoundItem);
 	}
 }
+
 
 
