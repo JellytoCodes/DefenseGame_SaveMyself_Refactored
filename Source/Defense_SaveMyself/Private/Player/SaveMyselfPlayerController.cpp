@@ -57,7 +57,6 @@ void ASaveMyselfPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(QuickSlot06, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot6);
 	EnhancedInputComponent->BindAction(QuickSlot07, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot7);
 	EnhancedInputComponent->BindAction(QuickSlot08, ETriggerEvent::Started, this, &ASaveMyselfPlayerController::SetQuickSlot8);
-
 }
 
 void ASaveMyselfPlayerController::Move(const FInputActionValue& InputActionValue)
