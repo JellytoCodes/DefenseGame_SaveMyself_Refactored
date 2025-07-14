@@ -26,7 +26,8 @@ void USaveMyselfItemSubsystem::HandleActorSpawnConfirmed(const FItemInformation&
 			}
 			else
 			{
-				PlayerQuickSlotData.RemoveAt(i);		
+				PlayerQuickSlotData.RemoveAt(i);
+				
 			}
 			break;
 		}
@@ -136,7 +137,7 @@ void USaveMyselfItemSubsystem::DecrementItem(const FWidgetSlotDataInfo& RemoveIt
 			}
 			else
 			{
-				PlayerQuickSlotData.RemoveAt(i);		
+				PlayerQuickSlotData.RemoveAt(i);	
 			}
 			break;
 		}
@@ -153,11 +154,6 @@ void USaveMyselfItemSubsystem::DecrementItem(const FWidgetSlotDataInfo& RemoveIt
 
 	CurrentBagWeight -= RemoveItem.ItemWeight;
 	DecrementItemDataDelegate.Broadcast();
-}
-
-void USaveMyselfItemSubsystem::UseItem(const FItemInformation& InUseItem)
-{
-
 }
 
 void USaveMyselfItemSubsystem::GetQuickSlotIndexItemData(const int32 SlotIndex)

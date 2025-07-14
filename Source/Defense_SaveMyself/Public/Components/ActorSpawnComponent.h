@@ -32,6 +32,8 @@ private :
 
 	FItemInformation SpawnItemData;
 
+	bool bCanPlaceConfirm = false;
+
 	bool TraceToGround(FHitResult& HitResult) const;
 	void CreatePreviewActor();
 	void SetGhostMaterial(bool bCanPlace);

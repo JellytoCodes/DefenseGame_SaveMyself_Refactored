@@ -48,11 +48,14 @@ void UActorSpawnComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 			PreviewActor->SetActorLocation(ConfirmLocation);
 			PreviewActor->SetActorRotation(FRotator::ZeroRotator);
-			SetGhostMaterial(true);
+
+			bCanPlaceConfirm = true;
+			SetGhostMaterial(bCanPlaceConfirm);
 		}
 		else
 		{
-			SetGhostMaterial(false);
+			bCanPlaceConfirm = false;
+			SetGhostMaterial(bCanPlaceConfirm);
 		}
 	}
 }
@@ -114,26 +117,45 @@ bool UActorSpawnComponent::TraceToGround(FHitResult& HitResult) const
 	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (!PC) return false;
 
-	return PC->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), false, HitResult);
+	return PC->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel1), false, HitResult);
 }
 
 void UActorSpawnComponent::ConfirmPlacement()
 {
 	if (SpawnItemData.ItemType == EItemTypes::Weapon)
 	{
-		// TODO.
-		// Weapon 타입 아이템 일 경우 SpawnProjectile() 호출
-		// 손에서 나가는 것으로 진행
-		// AnimNotify로 위치 조정
+		FVector Location = GetOwner()->GetActorLocation();
+		FRotator Rotation = GetOwner()->GetActorRotation();
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
+
+		ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
+
+		ProjectileActor->SetLifeSpan(5.f);
 	}
+
 	else
 	{
 		if (!PreviewActor) return;
 
-		PreviewActor->SetActorEnableCollision(true);
+		FVector Location = PreviewActor->GetActorLocation();
+		FRotator Rotation = PreviewActor->GetActorRotation();
+
+		PreviewActor->Destroy();
 		PreviewActor = nullptr;
 
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		AActor* PlacedActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
+
+		if (PlacedActor)
+		{
+			PlacedActor->SetActorEnableCollision(true);
+		}
+
 		ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
-		SpawnItemData = FItemInformation();	
+		SpawnItemData = FItemInformation();
 	}
 }

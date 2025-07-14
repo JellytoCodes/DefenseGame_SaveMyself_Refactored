@@ -58,9 +58,6 @@ public :
 	void DecrementItem(const FWidgetSlotDataInfo& RemoveItem);
 
 	UFUNCTION()
-	void UseItem(const FItemInformation& InUseItem);
-
-	UFUNCTION()
 	void GetQuickSlotIndexItemData(const int32 SlotIndex);
 
 	void RegisterSpawnComponent(UActorSpawnComponent* SpawnComp);

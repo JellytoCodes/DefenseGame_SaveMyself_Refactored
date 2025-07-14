@@ -2,7 +2,6 @@
 #include "Components/ActorEffectComponent.h"
 
 #include "Engine/Engine.h"
-#include "Kismet/GameplayStatics.h"
 #include "Engine/OverlapResult.h"
 
 UActorEffectComponent::UActorEffectComponent()
@@ -48,10 +47,9 @@ void UActorEffectComponent::ApplyBind(AActor* TargetActor, float CurEffect, floa
 	{
 		for (const FOverlapResult& Result : OverlapHits)
 		{
-			if (TargetActor)
+			if (AActor* HitActor = Result.GetActor())
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("Triggered Target Actor [%s]"), *TargetActor->GetName()));
-				//Target Binding (Receive CurEffect)
+				if (HitActor->ActorHasTag("Enemy")) HitActor->Destroy();
 			}
 		}
 	}

@@ -63,7 +63,7 @@ void USaveMyselfWidgetController::UpdateRemovePlayerItemData(const FWidgetSlotDa
 	}
 }
 
-void USaveMyselfWidgetController::UpdatePlayerQuickSlotWidget(UWrapBox* WrapBox)
+int32 USaveMyselfWidgetController::UpdatePlayerQuickSlotWidget(UWrapBox* WrapBox)
 {
 	if (const auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 	{
@@ -80,9 +80,10 @@ void USaveMyselfWidgetController::UpdatePlayerQuickSlotWidget(UWrapBox* WrapBox)
 				}
 				else
 				{
-					return;
+					return i;
 				}
 			}
 		}
 	}
+	return 0;
 }
