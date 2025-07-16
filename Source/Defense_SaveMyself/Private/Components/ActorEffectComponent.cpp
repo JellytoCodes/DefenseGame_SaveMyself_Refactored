@@ -3,6 +3,7 @@
 
 #include "Engine/Engine.h"
 #include "Engine/OverlapResult.h"
+#include "Interact/CombatInterface.h"
 
 UActorEffectComponent::UActorEffectComponent()
 {
@@ -23,13 +24,15 @@ void UActorEffectComponent::ApplyAOEDamage(AActor* TargetActor, float CurEffect,
 	const bool bHit = GetWorld()->OverlapMultiByChannel(
 	OverlapHits, TargetActor->GetActorLocation(), FQuat::Identity, ECC_Pawn, Sphere);
 
-	if (bHit)
+	if (!bHit) return;
+	
+	for (const FOverlapResult& Result : OverlapHits)
 	{
-		for (const FOverlapResult& Result : OverlapHits)
+		if (AActor* HitActor = Result.GetActor())
 		{
-			if (TargetActor)
+			if (HitActor->Implements<UCombatInterface>())
 			{
-				//Target Damaged (Receive CurEffect)
+				ICombatInterface::Execute_DamagedEvent(HitActor, CurEffect);
 			}
 		}
 	}
@@ -43,13 +46,15 @@ void UActorEffectComponent::ApplyBind(AActor* TargetActor, float CurEffect, floa
 	const bool bHit = GetWorld()->OverlapMultiByChannel(
 	OverlapHits, TargetActor->GetActorLocation(), FQuat::Identity, ECC_Pawn, Sphere);
 
-	if (bHit)
+	if (!bHit) return;
+	
+	for (const FOverlapResult& Result : OverlapHits)
 	{
-		for (const FOverlapResult& Result : OverlapHits)
+		if (AActor* HitActor = Result.GetActor())
 		{
-			if (AActor* HitActor = Result.GetActor())
+			if (HitActor->Implements<UCombatInterface>())
 			{
-				if (HitActor->ActorHasTag("Enemy")) HitActor->Destroy();
+				ICombatInterface::Execute_BindingEvent(HitActor, CurEffect);
 			}
 		}
 	}

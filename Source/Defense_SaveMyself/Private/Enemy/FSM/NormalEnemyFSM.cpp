@@ -27,7 +27,7 @@ void UNormalEnemyFSM::InitializeEnemyInfo()
 	if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 	{
 		FName EnemyName = OwnerPawn->Tags[1];
-		if (auto* FindEnemyData = EnemyInfoTable->FindRow<FEnemyInformation>(EnemyName, TEXT("")))
+		if (auto* FindEnemyData = EnemyInfoTable->FindRow<FEnemyInformation>(EnemyName, TEXT("Not Found Enemy Data")))
 		{
 			EnemyInformation.EnemyName = FindEnemyData->EnemyName;
 			EnemyInformation.EnemyType = FindEnemyData->EnemyType;
@@ -37,11 +37,7 @@ void UNormalEnemyFSM::InitializeEnemyInfo()
 			EnemyInformation.AttackPower = FindEnemyData->AttackPower;
 			EnemyInformation.AttackInterval = FindEnemyData->AttackInterval;
 			EnemyInformation.AttackRange = FindEnemyData->AttackRange;
-
-			UE_LOG(LogTemp, Warning, TEXT("Monster Name [%s]"), *EnemyInformation.EnemyName.ToString());
-			UE_LOG(LogTemp, Warning, TEXT("Monster Type [%d]"), EnemyInformation.EnemyType);
-			UE_LOG(LogTemp, Warning, TEXT("EliteAIType [%d]"), EnemyInformation.EliteType);
-			UE_LOG(LogTemp, Warning, TEXT("MaxHP [%.2f]"), EnemyInformation.MaxHP);
+			CurrentHp = EnemyInformation.MaxHP;
 
 			OwnerPawn->GetCharacterMovement()->MaxWalkSpeed = EnemyInformation.MoveSpeed;
 		}

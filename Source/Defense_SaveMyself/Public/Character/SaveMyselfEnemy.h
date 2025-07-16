@@ -21,10 +21,14 @@ public :
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	UFUNCTION(BlueprintPure)
-	USkeletalMeshComponent* GetEnemyMesh() {return GetMesh(); }
+	/* Combat Interface */
+	virtual void BindingEvent_Implementation(const float CurEffect) override;
+	virtual void DamagedEvent_Implementation(const float Damage) override;
+	/* End Combat Interface */
 
 protected :
+	virtual void Die() override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TObjectPtr<UNormalEnemyFSM> EnemyComponent;
 
@@ -33,4 +37,6 @@ protected :
 
 	UPROPERTY()
 	TObjectPtr<ANormalEnemyAIController> EnemyAIController;
+
+	
 };

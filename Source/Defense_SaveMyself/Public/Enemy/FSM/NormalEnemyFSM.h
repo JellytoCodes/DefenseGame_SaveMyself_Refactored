@@ -17,19 +17,17 @@ public:
 
 	float GetAttackRange() const { return EnemyInformation.AttackRange;}
 
+	FEnemyInformation EnemyInformation;
+	float CurrentHp = 0.f;
+
 protected : 
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MonsterID")
-	FName MonsterID;	
 
 	UPROPERTY()
 	AActor* TargetActor;
 
 	UPROPERTY(EditDefaultsOnly)
 	UDataTable* EnemyInfoTable;
-
-	FEnemyInformation EnemyInformation;
 
 	void InitializeEnemyInfo();
 	void EquipWeapon();

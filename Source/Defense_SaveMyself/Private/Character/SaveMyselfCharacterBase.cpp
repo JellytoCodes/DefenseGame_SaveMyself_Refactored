@@ -17,3 +17,8 @@ void ASaveMyselfCharacterBase::InitializeCharacterInfo()
 
 }
 
+void ASaveMyselfCharacterBase::Die()
+{
+	Destroy();
+}
+

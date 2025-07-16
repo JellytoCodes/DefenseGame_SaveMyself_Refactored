@@ -5,6 +5,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Enemy/AIController/NormalEnemyAIController.h"
 #include "Enemy/FSM/NormalEnemyFSM.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
@@ -20,8 +21,6 @@ UNormalEnemyFSM* ASaveMyselfEnemy::GetEnemyFSMComponent()
 void ASaveMyselfEnemy::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
-
 
 	EnemyAIController = Cast<ANormalEnemyAIController>(NewController);
 	if (EnemyAIController)
@@ -41,5 +40,30 @@ void ASaveMyselfEnemy::PossessedBy(AController* NewController)
 			}
 		}
 	}
+}
 
+void ASaveMyselfEnemy::BindingEvent_Implementation(const float CurEffect)
+{
+	FTimerHandle BindingTime;
+	GetCharacterMovement()->MaxWalkSpeed = 0;
+	GetWorldTimerManager().SetTimer(BindingTime, [this]
+	{
+		GetCharacterMovement()->MaxWalkSpeed = EnemyComponent->EnemyInformation.MoveSpeed;	
+	}, CurEffect, false);
+}
+
+void ASaveMyselfEnemy::DamagedEvent_Implementation(const float Damage)
+{
+	EnemyComponent->CurrentHp -= Damage;
+	if (EnemyComponent->CurrentHp <= 0)
+	{
+		Die();
+	}
+}
+
+void ASaveMyselfEnemy::Die()
+{
+	if (DeathAnim) PlayAnimMontage(DeathAnim);
+
+	//Super::Die();
 }
