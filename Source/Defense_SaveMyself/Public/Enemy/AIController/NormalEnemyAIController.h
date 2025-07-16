@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "NormalEnemyAIController.generated.h"
 
+class UBehaviorTreeComponent;
 class UNormalEnemyFSM;
 class ASaveMyselfEnemy;
 class UAIPerceptionComponent;
@@ -21,32 +22,13 @@ class DEFENSE_SAVEMYSELF_API ANormalEnemyAIController : public AAIController
 public :
 	ANormalEnemyAIController();
 
-	void HandleIdle();
-	void HandlePatrol();
-	void HandleChase();
-	void HandleAttack();
-
-	void EvaluateState();
-
 protected :
-
-	virtual void OnPossess(APawn* InPawn) override;
-
-private :
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "Perception", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ASaveMyselfEnemy> EnemyActor;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "Perception", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "AI")
 	TObjectPtr<UAIPerceptionComponent> PerceptionComp;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "Perception", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "AI")
 	TObjectPtr<UAISenseConfig_Sight> SightConfig;
 
-	UFUNCTION()
-	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-
-	int32 regionIndex = 0;
-
-
+	UPROPERTY()
+	UBehaviorTreeComponent* BehaviorTree;
 };

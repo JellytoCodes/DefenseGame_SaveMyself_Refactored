@@ -16,6 +16,7 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfActor : public AActor
 	
 public:	
 	ASaveMyselfActor();
+	virtual void BeginPlay() override;
 
 protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Setting")
@@ -32,4 +33,7 @@ protected :
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Setting")
 	TObjectPtr<UActorEffectComponent> ActorEffectComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "StimuliSource")
+	class UAIPerceptionStimuliSourceComponent* StimuliSourceComp;
 };

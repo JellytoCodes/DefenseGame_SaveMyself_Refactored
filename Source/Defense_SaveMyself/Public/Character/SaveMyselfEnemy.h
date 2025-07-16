@@ -6,6 +6,8 @@
 #include "Character/SaveMyselfCharacterBase.h"
 #include "SaveMyselfEnemy.generated.h"
 
+class ANormalEnemyAIController;
+class UBehaviorTree;
 class UNormalEnemyFSM;
 
 UCLASS()
@@ -17,7 +19,18 @@ public :
 	ASaveMyselfEnemy();
 	UNormalEnemyFSM* GetEnemyFSMComponent();
 
-private :
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category = "Perception", meta = (AllowPrivateAccess = "true"))
+	virtual void PossessedBy(AController* NewController) override;
+
+	UFUNCTION(BlueprintPure)
+	USkeletalMeshComponent* GetEnemyMesh() {return GetMesh(); }
+
+protected :
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TObjectPtr<UNormalEnemyFSM> EnemyComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<ANormalEnemyAIController> EnemyAIController;
 };
