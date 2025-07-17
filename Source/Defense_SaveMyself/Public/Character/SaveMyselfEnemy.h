@@ -6,6 +6,7 @@
 #include "Character/SaveMyselfCharacterBase.h"
 #include "SaveMyselfEnemy.generated.h"
 
+class UEffectWidgetComponent;
 class ANormalEnemyAIController;
 class UBehaviorTree;
 class UNormalEnemyFSM;
@@ -20,6 +21,7 @@ public :
 	UNormalEnemyFSM* GetEnemyFSMComponent();
 
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void BeginPlay() override;
 
 	/* Combat Interface */
 	virtual void BindingEvent_Implementation(const float CurEffect) override;
@@ -38,5 +40,9 @@ protected :
 	UPROPERTY()
 	TObjectPtr<ANormalEnemyAIController> EnemyAIController;
 
-	
+	UPROPERTY(EditDefaultsOnly, Category = "WidgetComponent")
+	TSubclassOf<UEffectWidgetComponent> EffectWidgetComponentClass;
+
+	UPROPERTY()
+	TObjectPtr<UEffectWidgetComponent> EffectWidgetComponent;
 };

@@ -5,12 +5,12 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Enemy/AIController/NormalEnemyAIController.h"
 #include "Enemy/FSM/NormalEnemyFSM.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "UI/WidgetComponents/EffectWidgetComponent.h"
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
 {
-	EnemyComponent = CreateDefaultSubobject<UNormalEnemyFSM>(TEXT("EnemyFSMComponent"));
+	EnemyComponent = CreateDefaultSubobject<UNormalEnemyFSM>("EnemyFSMComponent");
 }
 
 UNormalEnemyFSM* ASaveMyselfEnemy::GetEnemyFSMComponent()
@@ -42,13 +42,30 @@ void ASaveMyselfEnemy::PossessedBy(AController* NewController)
 	}
 }
 
+void ASaveMyselfEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (EffectWidgetComponentClass)
+	{
+		EffectWidgetComponent = NewObject<UEffectWidgetComponent>(this, EffectWidgetComponentClass);
+		EffectWidgetComponent->RegisterComponent();
+		EffectWidgetComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+		EffectWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+	}
+}
+
 void ASaveMyselfEnemy::BindingEvent_Implementation(const float CurEffect)
 {
+	if (EnemyAIController->GetBlackboardComponent()->GetValueAsBool(FName("bIsBinding"))) return;
+
 	FTimerHandle BindingTime;
-	GetCharacterMovement()->MaxWalkSpeed = 0;
+	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsBinding"), true);
+	EffectWidgetComponent->BindingEvent(true);
 	GetWorldTimerManager().SetTimer(BindingTime, [this]
 	{
-		GetCharacterMovement()->MaxWalkSpeed = EnemyComponent->EnemyInformation.MoveSpeed;	
+		EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsBinding"), false);
+		EffectWidgetComponent->BindingEvent(false);
 	}, CurEffect, false);
 }
 

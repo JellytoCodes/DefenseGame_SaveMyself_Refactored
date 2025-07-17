@@ -21,4 +21,3 @@ void ASaveMyselfCharacterBase::Die()
 {
 	Destroy();
 }
-
