@@ -1,7 +1,7 @@
 
 #include "Game/SaveMyselfGameModeBase.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
-#include "Kismet/GameplayStatics.h"
+#include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 
 void ASaveMyselfGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
@@ -23,6 +23,10 @@ void ASaveMyselfGameModeBase::InitGame(const FString& MapName, const FString& Op
 		{
 			ItemSubsystem->SetDataTable(ItemDataRow);	
 			ItemSubsystem-> BuildCache(StageInfoAsset);
+		}
+		if (auto* StageSubsystem = GetGameInstance()->GetSubsystem<USaveMyselfStageSubsystem>())
+		{
+			StageSubsystem->BuildCache(StageInfoAsset);
 		}
 	}
 }

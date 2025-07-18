@@ -43,7 +43,6 @@ class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UGameInstanceSubs
 	GENERATED_BODY()
 
 public :
-
 	void BuildCache(const USaveMyselfStageInfo* StageAsset);
 	void SetDataTable(UDataTable* DataTable);
 

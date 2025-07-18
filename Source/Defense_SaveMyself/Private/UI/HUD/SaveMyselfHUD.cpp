@@ -13,3 +13,14 @@ void ASaveMyselfHUD::InitPlayerQuickSlot()
 		PlayerQuickSlotInstance->AddToViewport();
 	}
 }
+
+void ASaveMyselfHUD::InitStageInfoWidget()
+{
+	if (StageInfoClass)
+	{
+		StageInfoInstance = CreateWidget<USavemyselfUserWidget>(GetWorld(), StageInfoClass);
+		if (!StageInfoInstance) return;
+
+		StageInfoInstance->AddToViewport();
+	}
+}

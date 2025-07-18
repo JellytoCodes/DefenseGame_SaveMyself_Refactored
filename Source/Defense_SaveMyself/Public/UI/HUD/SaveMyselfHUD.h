@@ -17,6 +17,7 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfHUD : public AHUD
 
 public :
 	void InitPlayerQuickSlot();
+	void InitStageInfoWidget();
 
 private :
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget Setting", meta = (AllowPrivateAccess = "true"))
@@ -24,5 +25,11 @@ private :
 
 	UPROPERTY()
 	TObjectPtr<USavemyselfUserWidget> PlayerQuickSlotInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget Setting", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<USavemyselfUserWidget> StageInfoClass;
+
+	UPROPERTY()
+	TObjectPtr<USavemyselfUserWidget> StageInfoInstance;
 
 };

@@ -4,6 +4,7 @@
 #include "Components/EnemySpawnerComponent.h"
 
 #include "Character/SaveMyselfEnemy.h"
+#include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 
 UEnemySpawnerComponent::UEnemySpawnerComponent()
 {
@@ -15,22 +16,23 @@ void UEnemySpawnerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// TODO : StageManagerComponent
-	// ActionPhase 전환 시 받는 브로드캐스트에 수신 등록하기
-	// .AddLambda([this]()
-	// {
-		if (SpawnType == ESpawnType::Duration)
+	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
+	{
+		StageSubsystem->OnActionPhaseDelegate.AddLambda([&]()
 		{
-			for (int32 i = 0 ; i < SpawnEnemies.Num() ; i++)
+			if (SpawnType == ESpawnType::Duration)
 			{
-				DurationTypeSpawned(i);
+				for (int32 i = 0 ; i < SpawnEnemies.Num() ; i++)
+				{
+					DurationTypeSpawned(i);
+				}
 			}
-		}
-		else if (SpawnType == ESpawnType::Infinite)
-		{
-			InfiniteTypeSpawned();
-		}
-	// });
+			else if (SpawnType == ESpawnType::Infinite)
+			{
+				InfiniteTypeSpawned();
+			}
+		});
+	}
 }
 
 void UEnemySpawnerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -65,19 +67,18 @@ void UEnemySpawnerComponent::DurationTypeSpawned(int32 Index)
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index], GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
-	}, SpawnDuration*(Index + 1), false);
+		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
+	}, SpawnEnemies[Index].SpawnDelay, false);
 }
 
 void UEnemySpawnerComponent::InfiniteTypeSpawned()
 {
-	GetWorld()->GetTimerManager().SetTimer(InfiniteTimerHandle,[this]()
+	const int32 Index = FMath::RandRange(0, SpawnEnemies.Num() - 1);
+	GetWorld()->GetTimerManager().SetTimer(InfiniteTimerHandle,[&]()
 	{
-		const int32 Index = FMath::RandRange(0, SpawnEnemies.Num() - 1);
-
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index], GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
-	}, SpawnDuration, true);
+		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
+	}, SpawnEnemies[Index].SpawnDelay, true);
 }
 

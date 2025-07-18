@@ -6,11 +6,25 @@
 #include "Components/ActorComponent.h"
 #include "EnemySpawnerComponent.generated.h"
 
+class ASaveMyselfEnemy;
+
 UENUM(BlueprintType)
 enum class ESpawnType : uint8
 {
 	Duration,
 	Infinite,
+};
+
+USTRUCT(BlueprintType)
+struct FEnemySpawnList
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ASaveMyselfEnemy> SpawnEnemy;
+
+	UPROPERTY(EditAnywhere)
+	float SpawnDelay = 2.f;
 };
 
 class ASaveMyselfEnemy;
@@ -48,10 +62,7 @@ protected:
 	float MaxSpawnDistance = 400.f;
 
 	UPROPERTY(EditAnywhere, Category = "Spawner")
-	float SpawnDuration = 2.f;
-
-	UPROPERTY(EditAnywhere, Category = "Spawner")
-	TArray<TSubclassOf<ASaveMyselfEnemy>> SpawnEnemies;
+	TArray<FEnemySpawnList> SpawnEnemies;
 
 	UPROPERTY(EditAnywhere, Category = "Spawner")
 	ESpawnType SpawnType = ESpawnType::Duration;

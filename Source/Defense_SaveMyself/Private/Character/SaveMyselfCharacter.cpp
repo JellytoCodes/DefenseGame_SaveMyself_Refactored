@@ -23,6 +23,7 @@ void ASaveMyselfCharacter::InitializeCharacterInfo()
 		if (ASaveMyselfHUD* SaveMyselfHUD = Cast<ASaveMyselfHUD>(SaveMyselfPlayerController->GetHUD()))
 		{
 			SaveMyselfHUD->InitPlayerQuickSlot();
+			SaveMyselfHUD->InitStageInfoWidget();
 		}
 	}
 }
