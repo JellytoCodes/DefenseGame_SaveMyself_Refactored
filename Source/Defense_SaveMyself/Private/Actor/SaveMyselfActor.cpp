@@ -32,3 +32,19 @@ void ASaveMyselfActor::BeginPlay()
 		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
 	}
 }
+
+bool ASaveMyselfActor::GetDamaged(const float InDamage)
+{
+	if ((StructureHP -= InDamage) <= 0)
+	{
+		Destroy();
+
+		return true;
+	}
+	return false;
+}
+
+void ASaveMyselfActor::SetStructureHP(const float InStructureHP)
+{
+	StructureHP = InStructureHP;
+}

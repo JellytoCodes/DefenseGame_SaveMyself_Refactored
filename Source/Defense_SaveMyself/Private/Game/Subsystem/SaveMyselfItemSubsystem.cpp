@@ -14,6 +14,15 @@ void USaveMyselfItemSubsystem::RegisterSpawnComponent(UActorSpawnComponent* Spaw
 	}
 }
 
+int32 USaveMyselfItemSubsystem::GetQuickSlotQuantity(const FName ItemName)
+{
+	for (FWidgetSlotDataInfo& Pair : PlayerQuickSlotData)
+	{
+		if (Pair.ItemName == ItemName) return Pair.Quantity;
+	}
+	return 0;
+}
+
 void USaveMyselfItemSubsystem::HandleActorSpawnConfirmed(const FItemInformation& SPawnedItem)
 {
 	for (int32 i = 0 ; i < PlayerQuickSlotData.Num() ; ++i)
@@ -27,7 +36,6 @@ void USaveMyselfItemSubsystem::HandleActorSpawnConfirmed(const FItemInformation&
 			else
 			{
 				PlayerQuickSlotData.RemoveAt(i);
-				
 			}
 			break;
 		}

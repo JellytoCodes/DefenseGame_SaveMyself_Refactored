@@ -21,14 +21,6 @@ void UActorSpawnComponent::BeginPlay()
 	{
 		ItemSubsystem->ExportItemDataDelegate.AddDynamic(this, &UActorSpawnComponent::GetSpawnItemData);
 	}
-
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-	{
-		if (ASaveMyselfPlayerController* SMPController = Cast<ASaveMyselfPlayerController>(PC))
-		{
-			SMPController->ItemConfirmActionDelegate.AddDynamic(this, &UActorSpawnComponent::ConfirmPlacement);
-		}
-	}
 }
 
 void UActorSpawnComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -124,16 +116,10 @@ void UActorSpawnComponent::ConfirmPlacement()
 {
 	if (SpawnItemData.ItemType == EItemTypes::Weapon)
 	{
-		FVector Location = GetOwner()->GetActorLocation();
-		FRotator Rotation = GetOwner()->GetActorRotation();
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-		AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
-
-		ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
-
-		ProjectileActor->SetLifeSpan(5.f);
+		if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
+		{
+			if (ItemSubsystem->GetQuickSlotQuantity(SpawnItemData.ItemName) > 0) SpawnedProjectile();
+		}
 	}
 
 	else
@@ -148,14 +134,29 @@ void UActorSpawnComponent::ConfirmPlacement()
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-		AActor* PlacedActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
+		ASaveMyselfActor* PlacedActor = GetWorld()->SpawnActor<ASaveMyselfActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
 
 		if (PlacedActor)
 		{
 			PlacedActor->SetActorEnableCollision(true);
+			PlacedActor->SetStructureHP(SpawnItemData.EffectValue);
 		}
 
 		ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
 		SpawnItemData = FItemInformation();
 	}
+}
+
+void UActorSpawnComponent::SpawnedProjectile()
+{
+	FVector Location = GetOwner()->GetActorLocation();
+	FRotator Rotation = GetOwner()->GetActorRotation();
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
+
+	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
+
+	ProjectileActor->SetLifeSpan(5.f);
 }

@@ -18,6 +18,11 @@ public:
 	ASaveMyselfActor();
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	bool GetDamaged(const float InDamage);
+
+	void SetStructureHP(const float InStructureHP);
+
 protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Setting")
 	TObjectPtr<UBoxComponent> BoxCollision;
@@ -36,4 +41,6 @@ protected :
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "StimuliSource")
 	class UAIPerceptionStimuliSourceComponent* StimuliSourceComp;
+
+	float StructureHP = 0;
 };

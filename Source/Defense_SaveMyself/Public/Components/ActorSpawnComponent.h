@@ -18,13 +18,15 @@ public :
 	UActorSpawnComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ConfirmPlacement();
 
 	FConfirmActorSpawnDelegate ConfirmActorSpawnDelegate;
 
 protected :
 	virtual void BeginPlay() override;
+
+	void SpawnedProjectile();
 
 private :
 	UFUNCTION()

@@ -45,4 +45,9 @@ protected :
 
 	UPROPERTY()
 	TObjectPtr<UEffectWidgetComponent> EffectWidgetComponent;
+
+	void BlackboardInitialize() const;
+
+	UFUNCTION()
+	void SetIsPlayerDead();
 };

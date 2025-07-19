@@ -61,6 +61,8 @@ public :
 
 	void RegisterSpawnComponent(UActorSpawnComponent* SpawnComp);
 
+	int32 GetQuickSlotQuantity(const FName ItemName);
+
 	UPROPERTY(BlueprintAssignable, Category = "Subsystem|AddItem")
 	FItemDataUpdateSignature AddItemDataDelegate;
 

@@ -3,6 +3,7 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "Character/SaveMyselfCharacter.h"
 #include "Enemy/AIController/NormalEnemyAIController.h"
 #include "Enemy/FSM/NormalEnemyFSM.h"
 #include "Kismet/GameplayStatics.h"
@@ -23,23 +24,6 @@ void ASaveMyselfEnemy::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	EnemyAIController = Cast<ANormalEnemyAIController>(NewController);
-	if (EnemyAIController)
-	{
-		EnemyAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-		EnemyAIController->RunBehaviorTree(BehaviorTree);
-		
-		EnemyAIController->GetBlackboardComponent()->SetValueAsFloat(FName("TargetDistance"), EnemyComponent->GetAttackRange());
-		if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-		{
-			if (APawn* PlayerPawn = PC->GetPawn())
-			{
-				if (PlayerPawn->ActorHasTag(FName("Player")))
-				{
-					EnemyAIController->GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), PlayerPawn); 			
-				}
-			}
-		}
-	}
 }
 
 void ASaveMyselfEnemy::BeginPlay()
@@ -53,6 +37,7 @@ void ASaveMyselfEnemy::BeginPlay()
 		EffectWidgetComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
 		EffectWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 	}
+	BlackboardInitialize();
 }
 
 void ASaveMyselfEnemy::BindingEvent_Implementation(const float CurEffect)
@@ -83,4 +68,36 @@ void ASaveMyselfEnemy::Die()
 	if (DeathAnim) PlayAnimMontage(DeathAnim);
 
 	//Super::Die();
+}
+
+void ASaveMyselfEnemy::BlackboardInitialize() const
+{
+	if (EnemyAIController)
+	{
+		EnemyAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		EnemyAIController->RunBehaviorTree(BehaviorTree);
+		
+		EnemyAIController->GetBlackboardComponent()->SetValueAsFloat(FName("TargetDistance"), EnemyComponent->GetAttackRange());
+		EnemyAIController->GetBlackboardComponent()->SetValueAsFloat(FName("AttackPower"),EnemyComponent->EnemyInformation.AttackPower);
+		EnemyAIController->GetBlackboardComponent()->SetValueAsFloat(FName("AttackInterval"),EnemyComponent->EnemyInformation.AttackInterval);
+		if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			if (APawn* PlayerPawn = PC->GetPawn())
+			{
+				if (ASaveMyselfCharacter* PlayerCharacter = Cast<ASaveMyselfCharacter>(PlayerPawn))
+				{
+					EnemyAIController->GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), PlayerCharacter);
+					PlayerCharacter->OnStageDefeatDelegate.AddDynamic(this, &ASaveMyselfEnemy::SetIsPlayerDead);
+				}
+			}
+		}
+	}
+}
+
+void ASaveMyselfEnemy::SetIsPlayerDead()
+{
+	if (EnemyAIController)
+	{
+		EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsPlayerDead"), true);
+	}
 }

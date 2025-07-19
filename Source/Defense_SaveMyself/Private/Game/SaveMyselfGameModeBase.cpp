@@ -14,8 +14,8 @@ void ASaveMyselfGameModeBase::InitGame(const FString& MapName, const FString& Op
 
 	//스테이지 번호 추출
 	int32 StageID = FCString::Atoi(*StagePart.RightChop(6));
-	check(StageID>0);
-
+	check(StageID > 0);
+	
 	StageInfoAsset = StageAssets[StageID - 1] ? StageAssets[StageID - 1] : nullptr;
 	if (StageInfoAsset && ItemDataRow)
 	{

@@ -26,7 +26,7 @@ void ASaveMyselfPlayerController::BeginPlay()
 
 	if (USaveMyselfItemSubsystem* ItemSubsystem = GetGameInstance()->GetSubsystem<USaveMyselfItemSubsystem>())
 	{
-		this->ExportQuickSlotIndexDelegate.AddDynamic(ItemSubsystem, &USaveMyselfItemSubsystem::GetQuickSlotIndexItemData);
+		ExportQuickSlotIndexDelegate.AddDynamic(ItemSubsystem, &USaveMyselfItemSubsystem::GetQuickSlotIndexItemData);
 
 		if (APawn* PlayerPawn = GetPawn())
 		{

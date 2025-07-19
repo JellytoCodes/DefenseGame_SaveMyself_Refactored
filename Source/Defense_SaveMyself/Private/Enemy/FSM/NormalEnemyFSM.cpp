@@ -39,6 +39,8 @@ void UNormalEnemyFSM::InitializeEnemyInfo()
 			EnemyInformation.AttackRange = FindEnemyData->AttackRange;
 			CurrentHp = EnemyInformation.MaxHP;
 
+			UE_LOG(LogTemp, Warning, TEXT("AttackPower : %.2f"), EnemyInformation.AttackPower);
+
 			OwnerPawn->GetCharacterMovement()->MaxWalkSpeed = EnemyInformation.MoveSpeed;
 		}
 	}

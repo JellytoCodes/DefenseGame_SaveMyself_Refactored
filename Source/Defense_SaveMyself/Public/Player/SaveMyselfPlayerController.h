@@ -23,6 +23,7 @@ public :
 	UPROPERTY(BlueprintAssignable)
 	FExportQuickSlotIndexDelegate ExportQuickSlotIndexDelegate;
 
+	UPROPERTY(BlueprintAssignable)
 	FItemConfirmActionDelegate ItemConfirmActionDelegate;
 
 protected :

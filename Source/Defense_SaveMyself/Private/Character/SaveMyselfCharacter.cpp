@@ -9,6 +9,15 @@ ASaveMyselfCharacter::ASaveMyselfCharacter()
 	ActorSpawnComponent = CreateDefaultSubobject<UActorSpawnComponent>(TEXT("ActorSpawnComponent"));
 }
 
+void ASaveMyselfCharacter::DamagedEvent_Implementation(const float Damage)
+{
+	if (--PlayerHP <= 0)
+	{
+		OnStageDefeatDelegate.Broadcast();
+	}
+	PlayerLifeDelegate.Broadcast(PlayerHP);
+}
+
 void ASaveMyselfCharacter::BeginPlay()
 {
 	Super::BeginPlay();
