@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetComponents/EffectWidgetComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
 {
@@ -72,11 +73,11 @@ void ASaveMyselfEnemy::DotDamagedEvent_Implementation(const float Damage)
 	{
 		EnemyComponent->CurrentHp -= Damage;
 		UpdateHPProgressBar();
+		EffectWidgetComponent->DotEventDelegate.Broadcast(false);
 		if (EnemyComponent->CurrentHp <= 0)
 		{
 			Die();
 		}
-		EffectWidgetComponent->DotEventDelegate.Broadcast(false);
 	}, 1.f, true);
 }
 
@@ -94,7 +95,12 @@ void ASaveMyselfEnemy::SlowMovementEvent_Implementation(const float CurEffect)
 void ASaveMyselfEnemy::Die()
 {
 	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsDied"), true);
-	GetWorldTimerManager().ClearAllTimersForObject(this);
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	GetWorldTimerManager().ClearTimer(BindingTime);
+	GetWorldTimerManager().ClearTimer(DotDamageTime);
+	GetWorldTimerManager().ClearTimer(SlowMovementTime);
 	SetLifeSpan(2.f);
 }
 
@@ -128,4 +134,7 @@ void ASaveMyselfEnemy::SetIsPlayerState()
 	{
 		EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsStageVictoryOrDefeat"), true);
 	}
+	GetWorldTimerManager().ClearTimer(BindingTime);
+	GetWorldTimerManager().ClearTimer(DotDamageTime);
+	GetWorldTimerManager().ClearTimer(SlowMovementTime);
 }

@@ -48,6 +48,9 @@ struct FItemInformation : public FTableRowBase
 	float EffectValue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
+	float EffectRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	EEffectTypes EffectType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
@@ -55,9 +58,6 @@ struct FItemInformation : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	float ItemWeight;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
-	UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Info")
 	FText NameDisplay;

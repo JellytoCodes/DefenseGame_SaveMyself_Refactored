@@ -3,6 +3,7 @@
 
 #include "Components/ActorEffectComponent.h"
 #include "Components/BoxComponent.h"
+#include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "Perception/AISense_Sight.h"
@@ -32,6 +33,10 @@ void ASaveMyselfActor::BeginPlay()
 	{
 		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
 	}
+	if (USaveMyselfItemSubsystem* ItemSubsystem = GetWorld()->GetSubsystem<USaveMyselfItemSubsystem>())
+	{
+		ItemInfo = ItemSubsystem->GetItemInfo(ItemName);
+	}
 }
 
 bool ASaveMyselfActor::GetDamaged(const float InDamage)
@@ -39,7 +44,6 @@ bool ASaveMyselfActor::GetDamaged(const float InDamage)
 	if ((StructureHP -= InDamage) <= 0)
 	{
 		Destroy();
-
 		return true;
 	}
 	return false;

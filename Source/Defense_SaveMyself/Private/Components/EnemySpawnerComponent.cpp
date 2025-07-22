@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Components/EnemySpawnerComponent.h"
-
 #include "Actor/SpawnActor.h"
 #include "Character/SaveMyselfEnemy.h"
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
@@ -77,15 +73,12 @@ void UEnemySpawnerComponent::DurationTypeSpawned()
 
 void UEnemySpawnerComponent::InfiniteTypeSpawned()
 {
-	int32 Index = 0;
-
 	GetWorld()->GetTimerManager().SetTimer(InfiniteTimerHandle,[&]()
 	{
-		Index = FMath::RandRange(0, SpawnEnemies.Num() - 1);
+		int32 Index = FMath::RandRange(0, SpawnEnemies.Num() - 1);
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
-		
 	}, SpawnDelay, true);	
 }
 

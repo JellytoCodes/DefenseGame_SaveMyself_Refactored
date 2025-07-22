@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SaveMyselfActor.generated.h"
 
+struct FItemInformation;
 class UActorEffectComponent;
 class UBoxComponent;
 
@@ -22,6 +23,9 @@ public:
 	bool GetDamaged(const float InDamage);
 
 	void SetStructureHP(const float InStructureHP);
+
+	UFUNCTION(BlueprintPure)
+	FItemInformation& GetItemInfo() const { return *ItemInfo; }
 
 protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Setting")
@@ -43,4 +47,9 @@ protected :
 	class UAIPerceptionStimuliSourceComponent* StimuliSourceComp;
 
 	float StructureHP = 0;
+
+	FItemInformation* ItemInfo;
+
+	UPROPERTY(EditDefaultsOnly)
+	FName ItemName;
 };

@@ -76,6 +76,11 @@ void USaveMyselfItemSubsystem::SetDataTable(UDataTable* DataTable)
 	ItemDataTable = DataTable;
 }
 
+FItemInformation* USaveMyselfItemSubsystem::GetItemInfo(const FName ItemName)
+{
+	return StageItemCache.Find(ItemName);
+}
+
 USaveMyselfItemSubsystem* USaveMyselfItemSubsystem::GetItemSubSystem(const UObject* WorldContext)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContext, EGetWorldErrorMode::ReturnNull))

@@ -48,7 +48,9 @@ public :
 
 	const TArray<FWidgetSlotDataInfo>& GetWarehouseSlotInfoInfo() const { return WarehouseSlotInfo; }
 	const TArray<FWidgetSlotDataInfo>& GetPlayerQuickSlotData() const { return PlayerQuickSlotData; }
-	const float GetCurrentBagWeight() const { return CurrentBagWeight; }
+	float GetCurrentBagWeight() const { return CurrentBagWeight; }
+
+	FItemInformation* GetItemInfo(const FName ItemName);
 
 	UFUNCTION(BlueprintPure, meta = (WorldContext="WorldContext"))
 	static USaveMyselfItemSubsystem* GetItemSubSystem(const UObject* WorldContext);
@@ -74,6 +76,8 @@ public :
 
 	UPROPERTY(BlueprintAssignable, Category = "Subsystem|ExportData")
 	FExportItemDataDelegate ExportItemDataDelegate;
+
+
 
 protected :	
 
