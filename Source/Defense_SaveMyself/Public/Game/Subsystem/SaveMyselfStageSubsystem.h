@@ -63,6 +63,12 @@ public :
 	UFUNCTION(BlueprintPure, Category = "StageInfo")
 	bool GetPreparePhase() const;
 
+	UFUNCTION(BlueprintPure, Category = "StageInfo")
+	EStageQuestType GetStageQuestType() const;
+
+	UFUNCTION(BlueprintPure, Category = "StageInfo")
+	FName GetNextStage() const;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnPhaseTimerHandleSignature OnPrepareTimerHandleDelegate;
 
@@ -70,6 +76,7 @@ public :
 	FOnPhaseTimerHandleSignature OnActionTimerHandleDelegate;
 
 	FOnPhaseStateHandleSignature OnActionPhaseDelegate;
+	FOnPhaseStateHandleSignature OnTimeOutDelegate;
 
 protected :
 	FTimerHandle CountdownHandle;

@@ -5,7 +5,6 @@
 #include "EffectWidgetComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectEventSignature, bool, State);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEffectDamageEventSignature, bool, State, float, Damage);
 
 UCLASS()
 class DEFENSE_SAVEMYSELF_API UEffectWidgetComponent : public UWidgetComponent
@@ -17,11 +16,11 @@ public :
 	FOnEffectEventSignature BindEventDelegate;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnEffectDamageEventSignature ExplosiveEventDelegate;
+	FOnEffectEventSignature ExplosiveEventDelegate;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnEffectEventSignature SlowMovementEventDelegate;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnEffectDamageEventSignature DotEventDelegate;
+	FOnEffectEventSignature DotEventDelegate;
 };

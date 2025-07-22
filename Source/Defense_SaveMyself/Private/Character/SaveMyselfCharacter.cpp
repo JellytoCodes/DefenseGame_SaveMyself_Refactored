@@ -1,6 +1,7 @@
 #include "Character/SaveMyselfCharacter.h"
 
 #include "Components/ActorSpawnComponent.h"
+#include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 #include "Player/SaveMyselfPlayerController.h"
 #include "UI/HUD/SaveMyselfHUD.h"
 
@@ -10,20 +11,21 @@ ASaveMyselfCharacter::ASaveMyselfCharacter()
 	ActorSpawnComponent = CreateDefaultSubobject<UActorSpawnComponent>(TEXT("ActorSpawnComponent"));
 }
 
-void ASaveMyselfCharacter::DamagedEvent_Implementation(const float Damage)
-{
-	if (--PlayerHP <= 0)
-	{
-		OnStageDefeatDelegate.Broadcast();
-	}
-	PlayerLifeDelegate.Broadcast(PlayerHP);
-}
-
 void ASaveMyselfCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
 	InitializeCharacterInfo();
+
+
+	if (auto* StageSubsystem = GetWorld()->GetSubsystem<USaveMyselfStageSubsystem>())
+	{
+		if (StageSubsystem->GetStageQuestType() == EStageQuestType::TimeLimit)
+		{
+			StageSubsystem->OnTimeOutDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageVictoryBroadCast);
+		}
+	}
+
 }
 
 void ASaveMyselfCharacter::InitializeCharacterInfo()
@@ -36,4 +38,23 @@ void ASaveMyselfCharacter::InitializeCharacterInfo()
 			SaveMyselfHUD->InitStageInfoWidget();
 		}
 	}
+}
+
+void ASaveMyselfCharacter::OnStageDefeatBroadCast() const
+{
+	OnStageDefeatDelegate.Broadcast();
+}
+
+void ASaveMyselfCharacter::OnStageVictoryBroadCast() const
+{
+	OnStageVictoryDelegate.Broadcast();
+}
+
+void ASaveMyselfCharacter::DamagedEvent_Implementation(const float Damage)
+{
+	if (--PlayerHP <= 0)
+	{
+		OnStageDefeatBroadCast();
+	}
+	PlayerLifeDelegate.Broadcast(PlayerHP);
 }

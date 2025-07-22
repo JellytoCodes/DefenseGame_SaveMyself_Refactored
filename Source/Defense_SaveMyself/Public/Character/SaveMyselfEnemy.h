@@ -37,7 +37,15 @@ public :
 	FTimerHandle SlowMovementTime;
 	/* end Effect TimerHandle*/
 
-	void GetCurrentHP() const { EnemyComponent->CurrentHp; }
+	UFUNCTION(BlueprintPure)
+	float GetCurrentHP() const { return EnemyComponent->CurrentHp; }
+
+	UFUNCTION(BlueprintPure)
+	float GetMaxHP() const { return EnemyComponent->EnemyInformation.MaxHP; }
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHPProgressBar();
+
 protected :
 	virtual void Die() override;
 
@@ -59,5 +67,5 @@ protected :
 	void BlackboardInitialize() const;
 
 	UFUNCTION()
-	void SetIsPlayerDead();
+	void SetIsPlayerState();
 };

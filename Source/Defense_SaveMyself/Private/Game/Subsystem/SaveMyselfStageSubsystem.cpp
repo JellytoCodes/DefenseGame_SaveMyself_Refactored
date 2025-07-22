@@ -40,6 +40,11 @@ void USaveMyselfStageSubsystem::TimerCountdown()
 			bActionPhase = true;
 			ActionPhaseCountdown();
 		}
+
+		else if (bActionPhase)
+		{
+			OnTimeOutDelegate.Broadcast();
+		}
 	}
 	else
 	{
@@ -74,4 +79,14 @@ FText USaveMyselfStageSubsystem::GetQuestDescription() const
 bool USaveMyselfStageSubsystem::GetPreparePhase() const
 {
 	return bPreparePhase;
+}
+
+EStageQuestType USaveMyselfStageSubsystem::GetStageQuestType() const
+{
+	return CurrentStageInfo.CurrentStageQuestInfo.QuestType;
+}
+
+FName USaveMyselfStageSubsystem::GetNextStage() const
+{
+	return CurrentStageInfo.NextStage;
 }

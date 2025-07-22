@@ -24,13 +24,20 @@ public :
 	FOnStageResultSignature OnStageDefeatDelegate;
 
 	UPROPERTY(BlueprintAssignable)
+	FOnStageResultSignature OnStageVictoryDelegate;
+
+	UPROPERTY(BlueprintAssignable)
 	FOnPlayerLifeDelegate PlayerLifeDelegate;
+
 protected :
 	virtual void BeginPlay() override;
 	virtual void InitializeCharacterInfo() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpawnActorComponent")
 	TObjectPtr<UActorSpawnComponent> ActorSpawnComponent;
+
+	void OnStageDefeatBroadCast() const;
+	void OnStageVictoryBroadCast() const;
 
 private :
 	int32 PlayerHP = 5;
