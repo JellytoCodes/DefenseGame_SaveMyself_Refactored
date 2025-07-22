@@ -89,4 +89,9 @@ private :
 	UPROPERTY(EditAnywhere, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> QuickSlot08;
 	void SetQuickSlot8();
+
+	bool bIsControlled = true;
+
+	UFUNCTION()
+	void SetIsControlled();
 };

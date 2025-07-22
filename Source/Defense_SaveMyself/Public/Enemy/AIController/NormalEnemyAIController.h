@@ -30,5 +30,5 @@ protected :
 	TObjectPtr<UAISenseConfig_Sight> SightConfig;
 
 	UPROPERTY()
-	UBehaviorTreeComponent* BehaviorTree;
+	TObjectPtr<UBehaviorTreeComponent> BehaviorTree;
 };

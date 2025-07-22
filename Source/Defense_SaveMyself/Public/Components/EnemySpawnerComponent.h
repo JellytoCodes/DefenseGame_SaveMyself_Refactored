@@ -22,9 +22,6 @@ struct FEnemySpawnList
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ASaveMyselfEnemy> SpawnEnemy;
-
-	UPROPERTY(EditAnywhere)
-	float SpawnDelay = 2.f;
 };
 
 class ASaveMyselfEnemy;
@@ -37,6 +34,9 @@ class DEFENSE_SAVEMYSELF_API UEnemySpawnerComponent : public UActorComponent
 public:	
 	UEnemySpawnerComponent();
 
+	UFUNCTION(BlueprintCallable)
+	void ClearTimer();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -46,10 +46,7 @@ protected:
 
 	int SpawnCount = 0;
 
-	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle InfiniteTimerHandle;
-
-	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle DurationTimerHandle;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawner")
@@ -69,4 +66,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Spawner")
 	ESpawnType SpawnType = ESpawnType::Duration;
+
+	UPROPERTY(EditAnywhere, Category = "Spawner")
+	float SpawnDelay = 2.f;
 };

@@ -2,6 +2,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Character/SaveMyselfCharacter.h"
 #include "Components/ActorSpawnComponent.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 
@@ -36,6 +37,12 @@ void ASaveMyselfPlayerController::BeginPlay()
 			}
 		}
 	}
+
+	if (ASaveMyselfCharacter* PlayerCharacter = Cast<ASaveMyselfCharacter>(GetPawn<APawn>()))
+	{
+		PlayerCharacter->OnStageDefeatDelegate.AddDynamic(this, &ASaveMyselfPlayerController::SetIsControlled);
+		PlayerCharacter->OnStageVictoryDelegate.AddDynamic(this, &ASaveMyselfPlayerController::SetIsControlled);
+	}
 }
 
 void ASaveMyselfPlayerController::SetupInputComponent()
@@ -61,6 +68,8 @@ void ASaveMyselfPlayerController::SetupInputComponent()
 
 void ASaveMyselfPlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	if (!bIsControlled) return;
+
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -77,6 +86,8 @@ void ASaveMyselfPlayerController::Move(const FInputActionValue& InputActionValue
 
 void ASaveMyselfPlayerController::LookNTurn(const FInputActionValue& InputActionValue)
 {
+	if (!bIsControlled) return;
+
 	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
 
 	if(APawn* ControlledPawn = GetPawn<APawn>())
@@ -92,47 +103,70 @@ void ASaveMyselfPlayerController::ViewPause()
 
 void ASaveMyselfPlayerController::Confirm()
 {
+	if (!bIsControlled) return;
+
 	ItemConfirmActionDelegate.Broadcast();
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot1()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(0);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot2()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(1);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot3()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(2);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot4()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(3);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot5()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(4);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot6()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(5);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot7()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(6);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot8()
 {
+	if (!bIsControlled) return;
+
 	ExportQuickSlotIndexDelegate.Broadcast(7);
+}
+
+void ASaveMyselfPlayerController::SetIsControlled()
+{
+	bIsControlled = false;
 }
 
 

@@ -18,5 +18,5 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UEnemySpawnerComponent* EnemySpawnerComponent;
+	TObjectPtr<UEnemySpawnerComponent> EnemySpawnerComponent;
 };

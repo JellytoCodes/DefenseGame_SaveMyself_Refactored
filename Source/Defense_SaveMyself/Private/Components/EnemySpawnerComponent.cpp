@@ -13,6 +13,12 @@ UEnemySpawnerComponent::UEnemySpawnerComponent()
 
 }
 
+void UEnemySpawnerComponent::ClearTimer()
+{
+	GetWorld()->GetTimerManager().ClearTimer(DurationTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(InfiniteTimerHandle);
+}
+
 void UEnemySpawnerComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -52,7 +58,7 @@ FVector UEnemySpawnerComponent::GetSpawnLocation() const
 
 void UEnemySpawnerComponent::DurationTypeSpawned()
 {
-	GetWorld()->GetTimerManager().SetTimer(DurationTimerHandle, [this]()
+	GetWorld()->GetTimerManager().SetTimer(DurationTimerHandle, [&]()
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -66,13 +72,12 @@ void UEnemySpawnerComponent::DurationTypeSpawned()
 				SpawnActor->SpawnerDestroy();
 			}
 		}
-	}, SpawnEnemies[SpawnCount].SpawnDelay, true);
+	}, SpawnDelay, true);
 }
 
 void UEnemySpawnerComponent::InfiniteTypeSpawned()
 {
 	int32 Index = 0;
-	int32 EnemyInfiniteDelay = 1;
 
 	GetWorld()->GetTimerManager().SetTimer(InfiniteTimerHandle,[&]()
 	{
@@ -80,7 +85,7 @@ void UEnemySpawnerComponent::InfiniteTypeSpawned()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
-		EnemyInfiniteDelay+=2;
-	}, SpawnEnemies[Index].SpawnDelay * EnemyInfiniteDelay, true);	
+		
+	}, SpawnDelay, true);	
 }
 
