@@ -23,7 +23,7 @@ public :
 protected :
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game Setup")
-	TArray<TObjectPtr<USaveMyselfStageInfo>> StageAssets;
+	TMap<FName, TObjectPtr<USaveMyselfStageInfo>> StageAssets;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game Setup")
 	TObjectPtr<UDataTable> ItemDataRow;
@@ -31,5 +31,6 @@ protected :
 	UPROPERTY()
 	TObjectPtr<USaveMyselfStageInfo> StageInfoAsset;
 
-	
+	UPROPERTY(BlueprintReadOnly)
+	FName StageName;
 };

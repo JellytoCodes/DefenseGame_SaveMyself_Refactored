@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Data/SaveMyselfItemInfo.h"
 #include "Data/SaveMyselfStageInfo.h"
-#include "Subsystems/GameInstanceSubsystem.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "SaveMyselfItemSubsystem.generated.h"
 
 class UActorSpawnComponent;
@@ -38,7 +38,7 @@ struct FWidgetSlotDataInfo
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FItemDataUpdateSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FExportItemDataDelegate, const FItemInformation&, UseItem);
 UCLASS()
-class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UGameInstanceSubsystem
+class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 

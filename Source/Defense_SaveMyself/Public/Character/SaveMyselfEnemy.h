@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/SaveMyselfCharacterBase.h"
+#include "Enemy/FSM/NormalEnemyFSM.h"
 #include "SaveMyselfEnemy.generated.h"
 
 class UEffectWidgetComponent;
@@ -26,8 +27,17 @@ public :
 	/* Combat Interface */
 	virtual void BindingEvent_Implementation(const float CurEffect) override;
 	virtual void DamagedEvent_Implementation(const float Damage) override;
-	/* End Combat Interface */
+	virtual void DotDamagedEvent_Implementation(const float Damage) override;
+	virtual void SlowMovementEvent_Implementation(const float CurEffect) override;
+	/* end Combat Interface */
 
+	/* Effect TimerHandle */
+	FTimerHandle BindingTime;
+	FTimerHandle DotDamageTime;
+	FTimerHandle SlowMovementTime;
+	/* end Effect TimerHandle*/
+
+	void GetCurrentHP() const { EnemyComponent->CurrentHp; }
 protected :
 	virtual void Die() override;
 

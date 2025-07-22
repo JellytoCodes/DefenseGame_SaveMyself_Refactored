@@ -39,15 +39,18 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	FVector GetSpawnLocation() const;
-	void DurationTypeSpawned(int32 Index);
+	void DurationTypeSpawned();
 	void InfiniteTypeSpawned();
 
 	int SpawnCount = 0;
 
+	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle InfiniteTimerHandle;
+
+	UPROPERTY(BlueprintReadWrite)
+	FTimerHandle DurationTimerHandle;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawner")
 	float SpawnSpread = 90.f;

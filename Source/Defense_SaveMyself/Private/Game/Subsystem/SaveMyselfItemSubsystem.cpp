@@ -80,10 +80,7 @@ USaveMyselfItemSubsystem* USaveMyselfItemSubsystem::GetItemSubSystem(const UObje
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContext, EGetWorldErrorMode::ReturnNull))
 	{
-		if (UGameInstance* GI = World->GetGameInstance())
-		{
-			return GI->GetSubsystem<USaveMyselfItemSubsystem>();		
-		}
+		return World->GetSubsystem<USaveMyselfItemSubsystem>();
 	}
 	return nullptr;	
 }

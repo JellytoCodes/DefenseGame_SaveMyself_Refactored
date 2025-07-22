@@ -15,9 +15,9 @@ ANormalEnemyAIController::ANormalEnemyAIController()
 	SetPerceptionComponent(*PerceptionComp);
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>("SightConfig");
 
-	SightConfig->SightRadius = 300.f;
-	SightConfig->LoseSightRadius = SightConfig->SightRadius * 1.2f;
-	SightConfig->PeripheralVisionAngleDegrees = 50.f;
+	SightConfig->SightRadius = 250.f;
+	SightConfig->LoseSightRadius = SightConfig->SightRadius * 1.15f;
+	SightConfig->PeripheralVisionAngleDegrees = 120.f;
 	SightConfig->SetMaxAge(2.f);
 
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;

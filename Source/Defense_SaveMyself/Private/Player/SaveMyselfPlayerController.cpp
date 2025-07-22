@@ -24,7 +24,7 @@ void ASaveMyselfPlayerController::BeginPlay()
 		}
 	}
 
-	if (USaveMyselfItemSubsystem* ItemSubsystem = GetGameInstance()->GetSubsystem<USaveMyselfItemSubsystem>())
+	if (USaveMyselfItemSubsystem* ItemSubsystem = GetWorld()->GetSubsystem<USaveMyselfItemSubsystem>())
 	{
 		ExportQuickSlotIndexDelegate.AddDynamic(ItemSubsystem, &USaveMyselfItemSubsystem::GetQuickSlotIndexItemData);
 

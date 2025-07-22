@@ -18,6 +18,7 @@ ASaveMyselfActor::ASaveMyselfActor()
 	ItemMesh->SetupAttachment(RootComponent);
 
 	ActorEffectComponent = CreateDefaultSubobject<UActorEffectComponent>("EffectComponent");
+
 	StimuliSourceComp = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSourceComp"));
 	StimuliSourceComp->RegisterForSense(UAISense_Sight::StaticClass());
 	StimuliSourceComp->bAutoRegister = true;

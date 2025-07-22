@@ -6,12 +6,14 @@
 #include "Character/SaveMyselfCharacter.h"
 #include "Enemy/AIController/NormalEnemyAIController.h"
 #include "Enemy/FSM/NormalEnemyFSM.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetComponents/EffectWidgetComponent.h"
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
 {
 	EnemyComponent = CreateDefaultSubobject<UNormalEnemyFSM>("EnemyFSMComponent");
+
 }
 
 UNormalEnemyFSM* ASaveMyselfEnemy::GetEnemyFSMComponent()
@@ -44,13 +46,12 @@ void ASaveMyselfEnemy::BindingEvent_Implementation(const float CurEffect)
 {
 	if (EnemyAIController->GetBlackboardComponent()->GetValueAsBool(FName("bIsBinding"))) return;
 
-	FTimerHandle BindingTime;
 	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsBinding"), true);
-	EffectWidgetComponent->BindingEvent(true);
+	EffectWidgetComponent->BindEventDelegate.Broadcast(true);
 	GetWorldTimerManager().SetTimer(BindingTime, [this]
 	{
 		EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsBinding"), false);
-		EffectWidgetComponent->BindingEvent(false);
+		EffectWidgetComponent->BindEventDelegate.Broadcast(false);
 	}, CurEffect, false);
 }
 
@@ -63,11 +64,32 @@ void ASaveMyselfEnemy::DamagedEvent_Implementation(const float Damage)
 	}
 }
 
+void ASaveMyselfEnemy::DotDamagedEvent_Implementation(const float Damage)
+{
+	EffectWidgetComponent->DotEventDelegate.Broadcast(true, Damage);
+	GetWorldTimerManager().SetTimer(SlowMovementTime, [this, Damage]
+	{
+		EnemyComponent->CurrentHp -= Damage;
+		EffectWidgetComponent->DotEventDelegate.Broadcast(false, 0);
+	}, 1.f, true);
+}
+
+void ASaveMyselfEnemy::SlowMovementEvent_Implementation(const float CurEffect)
+{
+	GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed / 2;
+	EffectWidgetComponent->SlowMovementEventDelegate.Broadcast(true);
+	GetWorldTimerManager().SetTimer(SlowMovementTime, [this]
+	{
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed * 2;
+		EffectWidgetComponent->SlowMovementEventDelegate.Broadcast(false);
+	}, CurEffect, false);
+}
+
 void ASaveMyselfEnemy::Die()
 {
-	if (DeathAnim) PlayAnimMontage(DeathAnim);
-
-	//Super::Die();
+	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsDied"), true);
+	SetLifeSpan(2.f);
+	GetWorldTimerManager().ClearAllTimersForObject(this);
 }
 
 void ASaveMyselfEnemy::BlackboardInitialize() const

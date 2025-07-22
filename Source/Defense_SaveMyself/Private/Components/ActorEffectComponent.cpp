@@ -13,7 +13,10 @@ UActorEffectComponent::UActorEffectComponent()
 
 void UActorEffectComponent::ApplySingleDamage(AActor* TargetActor, float CurEffect)
 {
-	//Single Target Damaged (CurEffect)
+	if (TargetActor->Implements<UCombatInterface>())
+	{
+		ICombatInterface::Execute_DamagedEvent(TargetActor, CurEffect);
+	}
 }
 
 void UActorEffectComponent::ApplyAOEDamage(AActor* TargetActor, float CurEffect, float EffectRadius)
@@ -57,6 +60,22 @@ void UActorEffectComponent::ApplyBind(AActor* TargetActor, float CurEffect, floa
 				ICombatInterface::Execute_BindingEvent(HitActor, CurEffect);
 			}
 		}
+	}
+}
+
+void UActorEffectComponent::ApplyDotDamage(AActor* TargetActor, float CurEffect)
+{
+	if (TargetActor->Implements<UCombatInterface>())
+	{
+		ICombatInterface::Execute_DotDamagedEvent(TargetActor, CurEffect);
+	}
+}
+
+void UActorEffectComponent::ApplySlowMovement(AActor* TargetActor, float CurEffect)
+{
+	if (TargetActor->Implements<UCombatInterface>())
+	{
+		ICombatInterface::Execute_SlowMovementEvent(TargetActor, CurEffect);
 	}
 }
 

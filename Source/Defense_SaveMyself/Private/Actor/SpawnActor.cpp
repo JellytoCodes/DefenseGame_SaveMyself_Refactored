@@ -10,4 +10,9 @@ ASpawnActor::ASpawnActor()
 	EnemySpawnerComponent = CreateDefaultSubobject<UEnemySpawnerComponent>("EnemySpawnerComponent");
 }
 
+void ASpawnActor::SpawnerDestroy()
+{
+	Destroy();
+}
+
 

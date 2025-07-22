@@ -2,11 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "Data/SaveMyselfStageInfo.h"
-#include "Subsystems/GameInstanceSubsystem.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "SaveMyselfStageSubsystem.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPhaseTimerHandleSignature, int32, Timer);
 DECLARE_MULTICAST_DELEGATE(FOnPhaseStateHandleSignature);
+
 USTRUCT(BlueprintType)
 struct FCurrentStageInfo
 {
@@ -32,7 +33,7 @@ struct FCurrentStageInfo
 };
 
 UCLASS()
-class DEFENSE_SAVEMYSELF_API USaveMyselfStageSubsystem : public UGameInstanceSubsystem
+class DEFENSE_SAVEMYSELF_API USaveMyselfStageSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
@@ -49,6 +50,9 @@ public :
 
 	UFUNCTION(BlueprintCallable, Category = "StageInfo|ActionPhase")
 	void ActionPhaseCountdown();
+
+	UFUNCTION(BlueprintCallable, Category = "StageInfo|ClearTimer")
+	void ClearCountdown();
 
 	UFUNCTION(BlueprintPure, Category = "StageInfo")
 	int32 GetStageNum() const;

@@ -18,10 +18,7 @@ USaveMyselfStageSubsystem* USaveMyselfStageSubsystem::GetStageSubsystem(const UO
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContext, EGetWorldErrorMode::ReturnNull))
 	{
-		if (UGameInstance* GI = World->GetGameInstance())
-		{
-			return GI->GetSubsystem<USaveMyselfStageSubsystem>();		
-		}
+		return World->GetSubsystem<USaveMyselfStageSubsystem>();
 	}
 	return nullptr;	
 }
@@ -36,7 +33,7 @@ void USaveMyselfStageSubsystem::TimerCountdown()
 {
 	if (--Timer < 0)
 	{
-		GetWorld()->GetTimerManager().ClearTimer(CountdownHandle);
+		ClearCountdown();
 		if (bPreparePhase)
 		{
 			bPreparePhase = false;
@@ -57,6 +54,11 @@ void USaveMyselfStageSubsystem::ActionPhaseCountdown()
 
 	OnActionPhaseDelegate.Broadcast();
 	GetWorld()->GetTimerManager().SetTimer(CountdownHandle, this, &USaveMyselfStageSubsystem::TimerCountdown, 1.f, true);
+}
+
+void USaveMyselfStageSubsystem::ClearCountdown()
+{
+	GetWorld()->GetTimerManager().ClearTimer(CountdownHandle);
 }
 
 int32 USaveMyselfStageSubsystem::GetStageNum() const

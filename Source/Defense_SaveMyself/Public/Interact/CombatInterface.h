@@ -23,4 +23,10 @@ public :
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DamagedEvent(const float Damage);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SlowMovementEvent(const float CurEffect);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void DotDamagedEvent(const float Damage);
 };

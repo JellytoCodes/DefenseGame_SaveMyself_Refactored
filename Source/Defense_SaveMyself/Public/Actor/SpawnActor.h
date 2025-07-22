@@ -14,8 +14,9 @@ class DEFENSE_SAVEMYSELF_API ASpawnActor : public AActor
 public:	
 	ASpawnActor();
 
-protected:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UEnemySpawnerComponent* EnemySpawnerComponent;
+	void SpawnerDestroy();
 
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UEnemySpawnerComponent* EnemySpawnerComponent;
 };

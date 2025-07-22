@@ -23,4 +23,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ApplyBind(AActor* TargetActor, float CurEffect, float EffectRadius);
+
+	UFUNCTION(BlueprintCallable)
+	void ApplyDotDamage(AActor*TargetActor, float CurEffect);
+
+	UFUNCTION(BlueprintCallable)
+	void ApplySlowMovement(AActor*TargetActor, float CurEffect);
 };

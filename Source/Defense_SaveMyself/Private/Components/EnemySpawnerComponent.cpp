@@ -3,6 +3,7 @@
 
 #include "Components/EnemySpawnerComponent.h"
 
+#include "Actor/SpawnActor.h"
 #include "Character/SaveMyselfEnemy.h"
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 
@@ -22,24 +23,14 @@ void UEnemySpawnerComponent::BeginPlay()
 		{
 			if (SpawnType == ESpawnType::Duration)
 			{
-				for (int32 i = 0 ; i < SpawnEnemies.Num() ; i++)
-				{
-					DurationTypeSpawned(i);
-				}
+				DurationTypeSpawned();
 			}
-			else if (SpawnType == ESpawnType::Infinite)
+			if (SpawnType == ESpawnType::Infinite)
 			{
 				InfiniteTypeSpawned();
 			}
 		});
 	}
-}
-
-void UEnemySpawnerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-
-	if (InfiniteTimerHandle.IsValid()) GetWorld()->GetTimerManager().ClearTimer(InfiniteTimerHandle);
 }
 
 FVector UEnemySpawnerComponent::GetSpawnLocation() const
@@ -59,26 +50,37 @@ FVector UEnemySpawnerComponent::GetSpawnLocation() const
 	return ChosenSpawnLocation + FVector(0.f, 0.f, 100.f);
 }
 
-void UEnemySpawnerComponent::DurationTypeSpawned(int32 Index)
+void UEnemySpawnerComponent::DurationTypeSpawned()
 {
-	FTimerHandle SpawnTimer;
-
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimer, [this, Index]()
+	GetWorld()->GetTimerManager().SetTimer(DurationTimerHandle, [this]()
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
-	}, SpawnEnemies[Index].SpawnDelay, false);
+		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[SpawnCount].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
+
+		if (++SpawnCount == SpawnEnemies.Num())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(DurationTimerHandle);
+			if (ASpawnActor* SpawnActor = Cast<ASpawnActor>(GetOwner()))
+			{
+				SpawnActor->SpawnerDestroy();
+			}
+		}
+	}, SpawnEnemies[SpawnCount].SpawnDelay, true);
 }
 
 void UEnemySpawnerComponent::InfiniteTypeSpawned()
 {
-	const int32 Index = FMath::RandRange(0, SpawnEnemies.Num() - 1);
+	int32 Index = 0;
+	int32 EnemyInfiniteDelay = 1;
+
 	GetWorld()->GetTimerManager().SetTimer(InfiniteTimerHandle,[&]()
 	{
+		Index = FMath::RandRange(0, SpawnEnemies.Num() - 1);
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		GetWorld()->SpawnActor<ASaveMyselfEnemy>(SpawnEnemies[Index].SpawnEnemy, GetSpawnLocation(), FRotator::ZeroRotator, SpawnParams);
-	}, SpawnEnemies[Index].SpawnDelay, true);
+		EnemyInfiniteDelay+=2;
+	}, SpawnEnemies[Index].SpawnDelay * EnemyInfiniteDelay, true);	
 }
 
