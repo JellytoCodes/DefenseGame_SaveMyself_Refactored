@@ -7,7 +7,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPhaseTimerHandleSignature, int32, Timer);
 DECLARE_MULTICAST_DELEGATE(FOnPhaseStateHandleSignature);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKilledCounterDelegate, int32, KilledCount);
 USTRUCT(BlueprintType)
 struct FCurrentStageInfo
 {
@@ -29,7 +29,7 @@ struct FCurrentStageInfo
 	FStageQuestInfo CurrentStageQuestInfo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	int32 StageNum = 0;
+	FText CurStageText;
 };
 
 UCLASS()
@@ -55,7 +55,7 @@ public :
 	void ClearCountdown();
 
 	UFUNCTION(BlueprintPure, Category = "StageInfo")
-	int32 GetStageNum() const;
+	FText GetStageNum() const;
 
 	UFUNCTION(BlueprintPure, Category = "StageInfo")
 	FText GetQuestDescription() const;
@@ -69,19 +69,30 @@ public :
 	UFUNCTION(BlueprintPure, Category = "StageInfo")
 	FName GetNextStage() const;
 
+	UFUNCTION(BlueprintPure, Category = "StageInfo")
+	FStageQuestInfo GetStageQuestInfo() const;
+
+	UFUNCTION()
+	void EnemyKilledCount();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnPhaseTimerHandleSignature OnPrepareTimerHandleDelegate;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPhaseTimerHandleSignature OnActionTimerHandleDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnKilledCounterDelegate OnEnemyKilledCountDelegate;
+
 	FOnPhaseStateHandleSignature OnActionPhaseDelegate;
 	FOnPhaseStateHandleSignature OnTimeOutDelegate;
-
+	FOnPhaseStateHandleSignature OnEnemyKilledDelegate;
+	
 protected :
 	FTimerHandle CountdownHandle;
 	
 	int32 Timer = 0;
+	int32 KilledCount = 0;
 
 	void TimerCountdown();
 

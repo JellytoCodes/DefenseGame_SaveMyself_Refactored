@@ -18,14 +18,18 @@ void ASaveMyselfCharacter::BeginPlay()
 	InitializeCharacterInfo();
 
 
-	if (auto* StageSubsystem = GetWorld()->GetSubsystem<USaveMyselfStageSubsystem>())
+	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
 	{
 		if (StageSubsystem->GetStageQuestType() == EStageQuestType::TimeLimit)
 		{
 			StageSubsystem->OnTimeOutDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageVictoryBroadCast);
 		}
+		else if (StageSubsystem->GetStageQuestType() == EStageQuestType::EnemyAllKill)
+		{
+			StageSubsystem->OnTimeOutDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageDefeatBroadCast);
+			StageSubsystem->OnEnemyKilledDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageVictoryBroadCast);
+		}
 	}
-
 }
 
 void ASaveMyselfCharacter::InitializeCharacterInfo()

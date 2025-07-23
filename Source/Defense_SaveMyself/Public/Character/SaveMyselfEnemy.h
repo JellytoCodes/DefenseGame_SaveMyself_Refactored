@@ -7,6 +7,8 @@
 #include "Enemy/FSM/NormalEnemyFSM.h"
 #include "SaveMyselfEnemy.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnDeathDelegate);
+
 class UEffectWidgetComponent;
 class ANormalEnemyAIController;
 class UBehaviorTree;
@@ -29,6 +31,7 @@ public :
 	virtual void DamagedEvent_Implementation(const float Damage) override;
 	virtual void DotDamagedEvent_Implementation(const float Damage) override;
 	virtual void SlowMovementEvent_Implementation(const float CurEffect) override;
+	virtual void UnDotDamagedEvent_Implementation() override;
 	/* end Combat Interface */
 
 	/* Effect TimerHandle */
@@ -36,6 +39,8 @@ public :
 	FTimerHandle DotDamageTime;
 	FTimerHandle SlowMovementTime;
 	/* end Effect TimerHandle*/
+
+	FOnDeathDelegate OnDeathDelegate;
 
 	UFUNCTION(BlueprintPure)
 	float GetCurrentHP() const { return EnemyComponent->CurrentHp; }
@@ -55,13 +60,13 @@ protected :
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ANormalEnemyAIController> EnemyAIController;
 
 	UPROPERTY(EditDefaultsOnly, Category = "WidgetComponent")
 	TSubclassOf<UEffectWidgetComponent> EffectWidgetComponentClass;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UEffectWidgetComponent> EffectWidgetComponent;
 
 	void BlackboardInitialize() const;

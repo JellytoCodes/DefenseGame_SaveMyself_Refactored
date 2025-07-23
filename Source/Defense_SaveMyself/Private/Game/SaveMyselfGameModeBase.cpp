@@ -18,12 +18,12 @@ void ASaveMyselfGameModeBase::InitGame(const FString& MapName, const FString& Op
 		{
 			StageName = StageData.Key;
 			StageInfoAsset = StageData.Value;
-			if (auto* ItemSubsystem = GetWorld()->GetSubsystem<USaveMyselfItemSubsystem>())
+			if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 			{
 				ItemSubsystem->SetDataTable(ItemDataRow);	
 				ItemSubsystem->BuildCache(StageInfoAsset);
 			}
-			if (auto* StageSubsystem = GetWorld()->GetSubsystem<USaveMyselfStageSubsystem>())
+			if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
 			{
 				StageSubsystem->BuildCache(StageInfoAsset);
 			}

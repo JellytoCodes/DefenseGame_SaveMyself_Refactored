@@ -1,5 +1,4 @@
 #include "Player/SaveMyselfPlayerController.h"
-
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Character/SaveMyselfCharacter.h"
@@ -25,7 +24,7 @@ void ASaveMyselfPlayerController::BeginPlay()
 		}
 	}
 
-	if (USaveMyselfItemSubsystem* ItemSubsystem = GetWorld()->GetSubsystem<USaveMyselfItemSubsystem>())
+	if (USaveMyselfItemSubsystem* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 	{
 		ExportQuickSlotIndexDelegate.AddDynamic(ItemSubsystem, &USaveMyselfItemSubsystem::GetQuickSlotIndexItemData);
 

@@ -10,7 +10,7 @@ void USaveMyselfStageSubsystem::BuildCache(const USaveMyselfStageInfo* StageAsse
 		CurrentStageInfo.CurrentStage = StageAsset->CurStage;
 		CurrentStageInfo.NextStage = StageAsset->NextStage;
 		CurrentStageInfo.CurrentStageQuestInfo = StageAsset->CurrentStageQuestInfo;
-		CurrentStageInfo.StageNum = StageAsset->StageNum;
+		CurrentStageInfo.CurStageText = StageAsset->CurStageText;
 	}
 }
 
@@ -66,9 +66,9 @@ void USaveMyselfStageSubsystem::ClearCountdown()
 	GetWorld()->GetTimerManager().ClearTimer(CountdownHandle);
 }
 
-int32 USaveMyselfStageSubsystem::GetStageNum() const
+FText USaveMyselfStageSubsystem::GetStageNum() const
 {
-	return CurrentStageInfo.StageNum;
+	return CurrentStageInfo.CurStageText;
 }
 
 FText USaveMyselfStageSubsystem::GetQuestDescription() const
@@ -89,4 +89,18 @@ EStageQuestType USaveMyselfStageSubsystem::GetStageQuestType() const
 FName USaveMyselfStageSubsystem::GetNextStage() const
 {
 	return CurrentStageInfo.NextStage;
+}
+
+FStageQuestInfo USaveMyselfStageSubsystem::GetStageQuestInfo() const
+{
+	return CurrentStageInfo.CurrentStageQuestInfo;
+}
+
+void USaveMyselfStageSubsystem::EnemyKilledCount()
+{
+	if (++KilledCount == CurrentStageInfo.CurrentStageQuestInfo.KilledEnemies)
+	{
+		OnEnemyKilledDelegate.Broadcast();
+	}
+	OnEnemyKilledCountDelegate.Broadcast(KilledCount);
 }

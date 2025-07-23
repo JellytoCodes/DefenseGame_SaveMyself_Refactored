@@ -1,6 +1,4 @@
-
 #include "Character/SaveMyselfEnemy.h"
-
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Character/SaveMyselfCharacter.h"
@@ -10,16 +8,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetComponents/EffectWidgetComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
 {
 	EnemyComponent = CreateDefaultSubobject<UNormalEnemyFSM>("EnemyFSMComponent");
 
-}
-
-UNormalEnemyFSM* ASaveMyselfEnemy::GetEnemyFSMComponent()
-{
-	return EnemyComponent;
 }
 
 void ASaveMyselfEnemy::PossessedBy(AController* NewController)
@@ -41,6 +35,26 @@ void ASaveMyselfEnemy::BeginPlay()
 		EffectWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 	}
 	BlackboardInitialize();
+
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		if (APawn* PlayerPawn = PC->GetPawn())
+		{
+			if (ASaveMyselfCharacter* PlayerCharacter = Cast<ASaveMyselfCharacter>(PlayerPawn))
+			{
+				PlayerCharacter->OnStageDefeatDelegate.AddDynamic(this, &ASaveMyselfEnemy::SetIsPlayerState);
+				PlayerCharacter->OnStageVictoryDelegate.AddDynamic(this, &ASaveMyselfEnemy::SetIsPlayerState);
+			}
+		}
+	}
+
+	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
+	{
+		if (StageSubsystem->GetStageQuestType() == EStageQuestType::EnemyAllKill)
+		{
+			OnDeathDelegate.AddUObject(StageSubsystem, &USaveMyselfStageSubsystem::EnemyKilledCount);	
+		}
+	}
 }
 
 void ASaveMyselfEnemy::BindingEvent_Implementation(const float CurEffect)
@@ -69,7 +83,7 @@ void ASaveMyselfEnemy::DamagedEvent_Implementation(const float Damage)
 void ASaveMyselfEnemy::DotDamagedEvent_Implementation(const float Damage)
 {
 	EffectWidgetComponent->DotEventDelegate.Broadcast(true);
-	GetWorldTimerManager().SetTimer(SlowMovementTime, [this, Damage]
+	GetWorldTimerManager().SetTimer(DotDamageTime, [this, Damage]
 	{
 		EnemyComponent->CurrentHp -= Damage;
 		UpdateHPProgressBar();
@@ -78,7 +92,7 @@ void ASaveMyselfEnemy::DotDamagedEvent_Implementation(const float Damage)
 		{
 			Die();
 		}
-	}, 1.f, true);
+	}, .5f, true);
 }
 
 void ASaveMyselfEnemy::SlowMovementEvent_Implementation(const float CurEffect)
@@ -92,8 +106,14 @@ void ASaveMyselfEnemy::SlowMovementEvent_Implementation(const float CurEffect)
 	}, CurEffect, false);
 }
 
+void ASaveMyselfEnemy::UnDotDamagedEvent_Implementation()
+{
+	GetWorldTimerManager().ClearTimer(DotDamageTime);
+}
+
 void ASaveMyselfEnemy::Die()
 {
+	OnDeathDelegate.Broadcast();
 	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsDied"), true);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -120,8 +140,6 @@ void ASaveMyselfEnemy::BlackboardInitialize() const
 				if (ASaveMyselfCharacter* PlayerCharacter = Cast<ASaveMyselfCharacter>(PlayerPawn))
 				{
 					EnemyAIController->GetBlackboardComponent()->SetValueAsObject(FName("PlayerActor"), PlayerCharacter);
-					PlayerCharacter->OnStageDefeatDelegate.AddDynamic(this, &ASaveMyselfEnemy::SetIsPlayerState);
-					PlayerCharacter->OnStageVictoryDelegate.AddDynamic(this, &ASaveMyselfEnemy::SetIsPlayerState);
 				}
 			}
 		}
@@ -137,4 +155,9 @@ void ASaveMyselfEnemy::SetIsPlayerState()
 	GetWorldTimerManager().ClearTimer(BindingTime);
 	GetWorldTimerManager().ClearTimer(DotDamageTime);
 	GetWorldTimerManager().ClearTimer(SlowMovementTime);
+}
+
+UNormalEnemyFSM* ASaveMyselfEnemy::GetEnemyFSMComponent()
+{
+	return EnemyComponent;
 }

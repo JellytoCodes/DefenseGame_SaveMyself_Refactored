@@ -1,4 +1,3 @@
-
 #include "Data/SaveMyselfEnemyInfo.h"
 
 FEnemyInformation::FEnemyInformation() :

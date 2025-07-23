@@ -29,4 +29,7 @@ public :
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DotDamagedEvent(const float Damage);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void UnDotDamagedEvent();
 };

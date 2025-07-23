@@ -1,6 +1,4 @@
-
 #include "Actor/SaveMyselfActor.h"
-
 #include "Components/ActorEffectComponent.h"
 #include "Components/BoxComponent.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
@@ -33,7 +31,7 @@ void ASaveMyselfActor::BeginPlay()
 	{
 		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
 	}
-	if (USaveMyselfItemSubsystem* ItemSubsystem = GetWorld()->GetSubsystem<USaveMyselfItemSubsystem>())
+	if (USaveMyselfItemSubsystem* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 	{
 		ItemInfo = ItemSubsystem->GetItemInfo(ItemName);
 	}

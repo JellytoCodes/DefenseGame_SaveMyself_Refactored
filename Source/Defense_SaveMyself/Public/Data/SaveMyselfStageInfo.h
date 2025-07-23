@@ -38,6 +38,9 @@ struct FStageQuestInfo
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText StageQuestDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 KilledEnemies = 0;
 };
 
 UCLASS()
@@ -53,7 +56,7 @@ public :
 	FName NextStage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	int32 StageNum = 0;
+	FText CurStageText;
 
 	UPROPERTY(EditDefaultsOnly, Category = "StageData")
 	int32 PrepareTime;
