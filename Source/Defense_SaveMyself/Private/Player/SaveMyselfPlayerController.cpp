@@ -5,11 +5,6 @@
 #include "Components/ActorSpawnComponent.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 
-ASaveMyselfPlayerController::ASaveMyselfPlayerController()
-{
-	
-}
-
 void ASaveMyselfPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -111,56 +106,79 @@ void ASaveMyselfPlayerController::SetQuickSlot1()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(0);
+	if (KeyIndex == 0) KeyIndex = -1;
+	else KeyIndex = 0;
+	
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot2()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(1);
+	if (KeyIndex == 1) KeyIndex = -1;
+	else KeyIndex = 1;
+
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot3()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(2);
+	if (KeyIndex == 2) KeyIndex = -1;
+	else KeyIndex = 2;
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot4()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(3);
+	if (KeyIndex == 3) KeyIndex = -1;
+	else KeyIndex = 3;
+
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot5()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(4);
+	if (KeyIndex == 4) KeyIndex = -1;
+	else KeyIndex = 4;
+
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot6()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(5);
+	if (KeyIndex == 5) KeyIndex = -1;
+	else KeyIndex = 5;
+
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot7()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(6);
+	if (KeyIndex == 6) KeyIndex = -1;
+	else KeyIndex = 6;
+
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetQuickSlot8()
 {
 	if (!bIsControlled) return;
 
-	ExportQuickSlotIndexDelegate.Broadcast(7);
+	if (KeyIndex == 7) KeyIndex = -1;
+	else KeyIndex = 7;
+
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
 }
 
 void ASaveMyselfPlayerController::SetIsControlled()

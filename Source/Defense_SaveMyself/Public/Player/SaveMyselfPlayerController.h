@@ -18,7 +18,6 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfPlayerController : public APlayerControl
 	GENERATED_BODY()
 
 public :
-	ASaveMyselfPlayerController();
 
 	UPROPERTY(BlueprintAssignable)
 	FExportQuickSlotIndexDelegate ExportQuickSlotIndexDelegate;
@@ -90,6 +89,7 @@ private :
 	TObjectPtr<UInputAction> QuickSlot08;
 	void SetQuickSlot8();
 
+	int32 KeyIndex = -1;
 	bool bIsControlled = true;
 
 	UFUNCTION()

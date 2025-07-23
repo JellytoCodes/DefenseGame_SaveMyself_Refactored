@@ -8,7 +8,7 @@
 #include "ActorSpawnComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FConfirmActorSpawnDelegate, const FItemInformation& /** SpawnItemData */);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConfirmPlace, bool, CheckPlace);
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DEFENSE_SAVEMYSELF_API UActorSpawnComponent : public UActorComponent
 {
@@ -23,10 +23,14 @@ public :
 
 	FConfirmActorSpawnDelegate ConfirmActorSpawnDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnConfirmPlace OnConfirmPlace;
+
 protected :
 	virtual void BeginPlay() override;
 
-	void SpawnedProjectile();
+	void SpawnedProjectile() const;
+	void SpawnedTrapAndStructure();
 
 private :
 	UFUNCTION()

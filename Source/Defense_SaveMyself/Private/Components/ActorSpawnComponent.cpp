@@ -123,33 +123,14 @@ void UActorSpawnComponent::ConfirmPlacement()
 
 	else
 	{
-		if (!PreviewActor) return;
-
-		FVector Location = PreviewActor->GetActorLocation();
-		FRotator Rotation = PreviewActor->GetActorRotation();
-
-		PreviewActor->Destroy();
-		PreviewActor = nullptr;
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-		ASaveMyselfActor* PlacedActor = GetWorld()->SpawnActor<ASaveMyselfActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
-
-		if (PlacedActor)
-		{
-			PlacedActor->SetActorEnableCollision(true);
-			PlacedActor->SetStructureHP(SpawnItemData.EffectValue);
-		}
-
-		ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
-		SpawnItemData = FItemInformation();
+		SpawnedTrapAndStructure();
 	}
 }
 
-void UActorSpawnComponent::SpawnedProjectile()
+void UActorSpawnComponent::SpawnedProjectile() const
 {
-	FVector Location = GetOwner()->GetActorLocation();
-	FRotator Rotation = GetOwner()->GetActorRotation();
+	const FVector Location = GetOwner()->GetActorLocation();
+	const FRotator Rotation = GetOwner()->GetActorRotation();
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
@@ -158,4 +139,28 @@ void UActorSpawnComponent::SpawnedProjectile()
 	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
 
 	ProjectileActor->SetLifeSpan(5.f);
+}
+
+void UActorSpawnComponent::SpawnedTrapAndStructure()
+{
+	OnConfirmPlace.Broadcast(bCanPlaceConfirm);
+	if (!PreviewActor || !bCanPlaceConfirm) return;
+		
+	const FVector Location = PreviewActor->GetActorLocation();
+	const FRotator Rotation = PreviewActor->GetActorRotation();
+
+	PreviewActor->Destroy();
+	PreviewActor = nullptr;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	if (ASaveMyselfActor* PlacedActor = GetWorld()->SpawnActor<ASaveMyselfActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams))
+	{
+		PlacedActor->SetActorEnableCollision(true);
+		PlacedActor->SetStructureHP(SpawnItemData.EffectValue);
+	}
+
+	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
+	SpawnItemData = FItemInformation();
 }
