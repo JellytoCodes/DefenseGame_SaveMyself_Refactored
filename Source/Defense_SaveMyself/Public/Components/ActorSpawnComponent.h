@@ -7,7 +7,7 @@
 #include "Data/SaveMyselfItemInfo.h"
 #include "ActorSpawnComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FConfirmActorSpawnDelegate, const FItemInformation& /** SpawnItemData */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FConfirmActorSpawnDelegate, const FItemInformation&, SpawnItemData);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConfirmPlace, bool, CheckPlace);
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DEFENSE_SAVEMYSELF_API UActorSpawnComponent : public UActorComponent
@@ -21,6 +21,7 @@ public :
 	UFUNCTION(BlueprintCallable)
 	void ConfirmPlacement();
 
+	UPROPERTY(BlueprintAssignable)
 	FConfirmActorSpawnDelegate ConfirmActorSpawnDelegate;
 
 	UPROPERTY(BlueprintAssignable)
@@ -32,6 +33,8 @@ protected :
 	void SpawnedProjectile() const;
 	void SpawnedTrapAndStructure();
 
+	void DisableEquippedItem();
+
 private :
 	UFUNCTION()
 	void GetSpawnItemData(const FItemInformation& ItemData);
@@ -42,7 +45,7 @@ private :
 
 	bool TraceToGround(FHitResult& HitResult) const;
 	void CreatePreviewActor();
-	void SetGhostMaterial(bool bCanPlace);
+	void SetGhostMaterial(const bool bCanPlace) const;
 
 	UPROPERTY()
 	AActor* PreviewActor = nullptr;

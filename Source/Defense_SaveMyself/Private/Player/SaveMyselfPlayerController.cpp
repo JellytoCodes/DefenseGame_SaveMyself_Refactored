@@ -97,7 +97,7 @@ void ASaveMyselfPlayerController::ViewPause()
 
 void ASaveMyselfPlayerController::Confirm()
 {
-	if (!bIsControlled) return;
+	if (!bIsControlled || KeyIndex == -1) return;
 
 	ItemConfirmActionDelegate.Broadcast();
 }
@@ -186,4 +186,8 @@ void ASaveMyselfPlayerController::SetIsControlled()
 	bIsControlled = false;
 }
 
-
+void ASaveMyselfPlayerController::DisableKeyIndex()
+{
+	KeyIndex = -1;
+	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
+}

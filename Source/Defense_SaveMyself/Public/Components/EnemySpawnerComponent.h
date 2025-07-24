@@ -34,7 +34,7 @@ class DEFENSE_SAVEMYSELF_API UEnemySpawnerComponent : public UActorComponent
 public:	
 	UEnemySpawnerComponent();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void ClearTimer();
 
 protected:

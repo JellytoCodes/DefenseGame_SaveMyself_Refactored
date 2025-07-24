@@ -17,6 +17,8 @@ public:
 	void SpawnerDestroy();
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UEnemySpawnerComponent> EnemySpawnerComponent;
 };

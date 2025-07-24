@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "DrawDebugHelpers.h"
+#include "Player/SaveMyselfPlayerController.h"
 
 UActorSpawnComponent::UActorSpawnComponent()
 {
@@ -87,7 +88,7 @@ void UActorSpawnComponent::CreatePreviewActor()
 	}
 }
 
-void UActorSpawnComponent::SetGhostMaterial(bool bCanPlace)
+void UActorSpawnComponent::SetGhostMaterial(const bool bCanPlace) const
 {
 	if (!PreviewActor) return;
 
@@ -118,6 +119,7 @@ void UActorSpawnComponent::ConfirmPlacement()
 		if (auto* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
 		{
 			if (ItemSubsystem->GetQuickSlotQuantity(SpawnItemData.ItemName) > 0) SpawnedProjectile();
+			if (ItemSubsystem->GetQuickSlotQuantity(SpawnItemData.ItemName) == 0) DisableEquippedItem();
 		}
 	}
 
@@ -155,12 +157,20 @@ void UActorSpawnComponent::SpawnedTrapAndStructure()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	if (ASaveMyselfActor* PlacedActor = GetWorld()->SpawnActor<ASaveMyselfActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams))
-	{
-		PlacedActor->SetActorEnableCollision(true);
-		PlacedActor->SetStructureHP(SpawnItemData.EffectValue);
-	}
-
+	GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
 	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
 	SpawnItemData = FItemInformation();
+
+	DisableEquippedItem();
+}
+
+void UActorSpawnComponent::DisableEquippedItem()
+{
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		if (ASaveMyselfPlayerController* SaveMyselfPC = Cast<ASaveMyselfPlayerController>(PC))
+		{
+			SaveMyselfPC->DisableKeyIndex();
+		}
+	}
 }

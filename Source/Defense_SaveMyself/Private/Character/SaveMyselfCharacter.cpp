@@ -4,11 +4,12 @@
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 #include "Player/SaveMyselfPlayerController.h"
 #include "UI/HUD/SaveMyselfHUD.h"
+#include "UI/WidgetComponents/ConfirmPlacedWidget.h"
 
 
 ASaveMyselfCharacter::ASaveMyselfCharacter()
 {
-	ActorSpawnComponent = CreateDefaultSubobject<UActorSpawnComponent>(TEXT("ActorSpawnComponent"));
+	ActorSpawnComponent = CreateDefaultSubobject<UActorSpawnComponent>("ActorSpawnComponent");
 }
 
 void ASaveMyselfCharacter::BeginPlay()
@@ -17,6 +18,13 @@ void ASaveMyselfCharacter::BeginPlay()
 
 	InitializeCharacterInfo();
 
+	if (ConfirmPlacedWidgetComponentClass)
+	{
+		ConfirmPlacedWidgetComponent = NewObject<UConfirmPlacedWidget>(this, ConfirmPlacedWidgetComponentClass);
+		ConfirmPlacedWidgetComponent->RegisterComponent();
+		ConfirmPlacedWidgetComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+		ConfirmPlacedWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+	}
 
 	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
 	{

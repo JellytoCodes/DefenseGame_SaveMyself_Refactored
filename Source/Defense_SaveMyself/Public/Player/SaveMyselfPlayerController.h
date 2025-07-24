@@ -25,6 +25,8 @@ public :
 	UPROPERTY(BlueprintAssignable)
 	FItemConfirmActionDelegate ItemConfirmActionDelegate;
 
+	void DisableKeyIndex();
+
 protected :
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

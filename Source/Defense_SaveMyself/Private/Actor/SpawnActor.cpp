@@ -1,4 +1,3 @@
-
 #include "Actor/SpawnActor.h"
 
 #include "Components/EnemySpawnerComponent.h"
@@ -10,9 +9,13 @@ ASpawnActor::ASpawnActor()
 	EnemySpawnerComponent = CreateDefaultSubobject<UEnemySpawnerComponent>("EnemySpawnerComponent");
 }
 
+void ASpawnActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
 void ASpawnActor::SpawnerDestroy()
 {
 	Destroy();
 }
-
-

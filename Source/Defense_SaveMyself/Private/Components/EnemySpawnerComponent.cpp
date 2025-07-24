@@ -1,18 +1,15 @@
 #include "Components/EnemySpawnerComponent.h"
 #include "Actor/SpawnActor.h"
+#include "Character/SaveMyselfCharacter.h"
 #include "Character/SaveMyselfEnemy.h"
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/SaveMyselfPlayerController.h"
 
 UEnemySpawnerComponent::UEnemySpawnerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-}
-
-void UEnemySpawnerComponent::ClearTimer()
-{
-	GetWorld()->GetTimerManager().ClearTimer(DurationTimerHandle);
-	GetWorld()->GetTimerManager().ClearTimer(InfiniteTimerHandle);
 }
 
 void UEnemySpawnerComponent::BeginPlay()
@@ -32,6 +29,18 @@ void UEnemySpawnerComponent::BeginPlay()
 				InfiniteTypeSpawned();
 			}
 		});
+	}
+	
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		if (ASaveMyselfPlayerController* SaveMyselfPC = Cast<ASaveMyselfPlayerController>(PC))
+		{
+			if (ASaveMyselfCharacter* SaveMyselfPlayer = Cast<ASaveMyselfCharacter>(PC->GetPawn()))
+			{
+				SaveMyselfPlayer->OnStageDefeatDelegate.AddDynamic(this, &UEnemySpawnerComponent::ClearTimer);
+				SaveMyselfPlayer->OnStageVictoryDelegate.AddDynamic(this, &UEnemySpawnerComponent::ClearTimer);
+			}
+		}
 	}
 }
 
@@ -62,11 +71,7 @@ void UEnemySpawnerComponent::DurationTypeSpawned()
 
 		if (++SpawnCount == SpawnEnemies.Num())
 		{
-			GetWorld()->GetTimerManager().ClearTimer(DurationTimerHandle);
-			if (ASpawnActor* SpawnActor = Cast<ASpawnActor>(GetOwner()))
-			{
-				SpawnActor->SpawnerDestroy();
-			}
+			ClearTimer();
 		}
 	}, SpawnDelay, true);
 }
@@ -82,3 +87,13 @@ void UEnemySpawnerComponent::InfiniteTypeSpawned()
 	}, SpawnDelay, true);	
 }
 
+void UEnemySpawnerComponent::ClearTimer()
+{
+	GetWorld()->GetTimerManager().ClearTimer(DurationTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(InfiniteTimerHandle);
+
+	if (ASpawnActor* SpawnActor = Cast<ASpawnActor>(GetOwner()))
+	{
+		SpawnActor->SpawnerDestroy();
+	}
+}

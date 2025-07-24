@@ -6,7 +6,7 @@ void USaveMyselfItemSubsystem::RegisterSpawnComponent(UActorSpawnComponent* Spaw
 {
 	if (SpawnComp)
 	{
-		SpawnComp->ConfirmActorSpawnDelegate.AddUObject(this, &USaveMyselfItemSubsystem::HandleActorSpawnConfirmed);
+		SpawnComp->ConfirmActorSpawnDelegate.AddDynamic(this, &USaveMyselfItemSubsystem::HandleActorSpawnConfirmed);
 	}
 }
 

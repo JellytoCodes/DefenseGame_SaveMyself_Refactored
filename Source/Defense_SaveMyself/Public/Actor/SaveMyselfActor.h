@@ -22,6 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool GetDamaged(const float InDamage);
 
+	UFUNCTION(BlueprintCallable)
 	void SetStructureHP(const float InStructureHP);
 
 	UFUNCTION(BlueprintPure)
