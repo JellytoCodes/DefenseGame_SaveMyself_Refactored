@@ -14,10 +14,9 @@ class DEFENSE_SAVEMYSELF_API ASpawnActor : public AActor
 public:	
 	ASpawnActor();
 
-	void SpawnerDestroy();
-
 protected:
 	virtual void BeginPlay() override;
+	virtual void Destroyed() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UEnemySpawnerComponent> EnemySpawnerComponent;

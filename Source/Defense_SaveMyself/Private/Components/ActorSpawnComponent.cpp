@@ -157,14 +157,16 @@ void UActorSpawnComponent::SpawnedTrapAndStructure()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
+	ASaveMyselfActor* StructureActor =  GetWorld()->SpawnActor<ASaveMyselfActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
 	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
+	StructureActor->SetStructureHP(SpawnItemData.EffectValue);
+
 	SpawnItemData = FItemInformation();
 
 	DisableEquippedItem();
 }
 
-void UActorSpawnComponent::DisableEquippedItem()
+void UActorSpawnComponent::DisableEquippedItem() const
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{

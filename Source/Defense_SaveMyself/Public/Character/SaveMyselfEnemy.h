@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Character/SaveMyselfCharacterBase.h"
+#include "Data/SaveMyselfStageInfo.h"
 #include "Enemy/FSM/NormalEnemyFSM.h"
 #include "SaveMyselfEnemy.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnDeathDelegate);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDeathActorReturnDelegate, const AActor*);
 
 class UEffectWidgetComponent;
 class ANormalEnemyAIController;
@@ -38,9 +40,10 @@ public :
 	FTimerHandle BindingTime;
 	FTimerHandle DotDamageTime;
 	FTimerHandle SlowMovementTime;
-	/* end Effect TimerHandle*/
 
 	FOnDeathDelegate OnDeathDelegate;
+	FOnDeathActorReturnDelegate OnDeathActorReturnDelegate;
+	/* end Effect TimerHandle*/
 
 	UFUNCTION(BlueprintPure)
 	float GetCurrentHP() const { return EnemyComponent->CurrentHp; }
@@ -73,4 +76,6 @@ protected :
 
 	UFUNCTION()
 	void SetIsPlayerState();
+
+	EStageQuestType StageQuestType = EStageQuestType::None;
 };

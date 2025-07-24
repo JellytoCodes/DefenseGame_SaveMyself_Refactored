@@ -12,6 +12,10 @@ void USaveMyselfStageSubsystem::BuildCache(const USaveMyselfStageInfo* StageAsse
 		CurrentStageInfo.CurrentStageQuestInfo = StageAsset->CurrentStageQuestInfo;
 		CurrentStageInfo.CurStageText = StageAsset->CurStageText;
 	}
+	if (CurrentStageInfo.CurrentStageQuestInfo.QuestType == EStageQuestType::TargetDestroy)
+	{
+		TargetKilledCount = CurrentStageInfo.CurrentStageQuestInfo.DestroyTargets.Num();
+	}
 }
 
 USaveMyselfStageSubsystem* USaveMyselfStageSubsystem::GetStageSubsystem(const UObject* WorldContext)
@@ -103,4 +107,17 @@ void USaveMyselfStageSubsystem::EnemyKilledCount()
 		OnEnemyKilledDelegate.Broadcast();
 	}
 	OnEnemyKilledCountDelegate.Broadcast(KilledCount);
+}
+
+void USaveMyselfStageSubsystem::NotifyActorDestroyed(const AActor* DestroyedActor)
+{
+	const FStageQuestInfo& QuestInfo = CurrentStageInfo.CurrentStageQuestInfo;
+	if (QuestInfo.DestroyTargets.Contains(DestroyedActor->GetClass()))
+	{
+		if (++KilledCount == TargetKilledCount)
+		{
+			OnEnemyKilledDelegate.Broadcast();
+		}
+		OnEnemyKilledCountDelegate.Broadcast(KilledCount);
+	}
 }

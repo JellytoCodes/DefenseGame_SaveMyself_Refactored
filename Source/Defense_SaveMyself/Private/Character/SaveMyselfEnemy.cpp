@@ -50,9 +50,14 @@ void ASaveMyselfEnemy::BeginPlay()
 
 	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
 	{
-		if (StageSubsystem->GetStageQuestType() == EStageQuestType::EnemyAllKill)
+		StageQuestType = StageSubsystem->GetStageQuestType();
+		if (StageQuestType == EStageQuestType::EnemyAllKill)
 		{
 			OnDeathDelegate.AddUObject(StageSubsystem, &USaveMyselfStageSubsystem::EnemyKilledCount);	
+		}
+		else if (StageQuestType == EStageQuestType::TargetDestroy)
+		{
+			OnDeathActorReturnDelegate.AddUObject(StageSubsystem, &USaveMyselfStageSubsystem::NotifyActorDestroyed);
 		}
 	}
 }
@@ -113,7 +118,9 @@ void ASaveMyselfEnemy::UnDotDamagedEvent_Implementation()
 
 void ASaveMyselfEnemy::Die()
 {
-	OnDeathDelegate.Broadcast();
+	if (StageQuestType == EStageQuestType::EnemyAllKill) OnDeathDelegate.Broadcast();
+	else if (StageQuestType == EStageQuestType::TargetDestroy) OnDeathActorReturnDelegate.Broadcast(this);
+	
 	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(FName("bIsDied"), true);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

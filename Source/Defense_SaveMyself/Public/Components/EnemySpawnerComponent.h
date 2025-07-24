@@ -34,7 +34,7 @@ class DEFENSE_SAVEMYSELF_API UEnemySpawnerComponent : public UActorComponent
 public:	
 	UEnemySpawnerComponent();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable) //테스트용 제거 BlueprintCallable 제거 예정
 	void ClearTimer();
 
 protected:

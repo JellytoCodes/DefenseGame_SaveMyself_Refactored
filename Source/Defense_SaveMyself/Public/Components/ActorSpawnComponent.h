@@ -33,7 +33,7 @@ protected :
 	void SpawnedProjectile() const;
 	void SpawnedTrapAndStructure();
 
-	void DisableEquippedItem();
+	void DisableEquippedItem() const;
 
 private :
 	UFUNCTION()

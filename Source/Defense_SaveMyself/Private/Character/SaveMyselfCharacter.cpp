@@ -37,6 +37,11 @@ void ASaveMyselfCharacter::BeginPlay()
 			StageSubsystem->OnEnemyKilledDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageDefeatBroadCast);
 			StageSubsystem->OnEnemyKilledDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageVictoryBroadCast);
 		}
+		else if (StageSubsystem->GetStageQuestType() == EStageQuestType::TargetDestroy)
+		{
+			StageSubsystem->OnTimeOutDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageDefeatBroadCast);
+			StageSubsystem->OnEnemyKilledDelegate.AddUObject(this, &ASaveMyselfCharacter::OnStageVictoryBroadCast);
+		}
 	}
 }
 
@@ -54,12 +59,20 @@ void ASaveMyselfCharacter::InitializeCharacterInfo()
 
 void ASaveMyselfCharacter::OnStageDefeatBroadCast() const
 {
-	OnStageDefeatDelegate.Broadcast();
+	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
+	{
+		StageSubsystem->ClearCountdown();
+		OnStageDefeatDelegate.Broadcast();
+	}
 }
 
 void ASaveMyselfCharacter::OnStageVictoryBroadCast() const
 {
-	OnStageVictoryDelegate.Broadcast();
+	if (auto* StageSubsystem = USaveMyselfStageSubsystem::GetStageSubsystem(this))
+	{
+		StageSubsystem->ClearCountdown();
+		OnStageVictoryDelegate.Broadcast();
+	}
 }
 
 void ASaveMyselfCharacter::DamagedEvent_Implementation(const float Damage)

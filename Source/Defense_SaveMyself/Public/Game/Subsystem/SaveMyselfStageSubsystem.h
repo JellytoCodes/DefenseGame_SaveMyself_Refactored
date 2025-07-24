@@ -43,7 +43,22 @@ public :
 	UFUNCTION(BlueprintPure, meta = (WorldContext="WorldContext"))
 	static USaveMyselfStageSubsystem* GetStageSubsystem(const UObject* WorldContext);
 
+	/** Delegate */
 	FCurrentStageInfo CurrentStageInfo;
+	FOnPhaseStateHandleSignature OnActionPhaseDelegate;
+	FOnPhaseStateHandleSignature OnTimeOutDelegate;
+	FOnPhaseStateHandleSignature OnEnemyKilledDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPhaseTimerHandleSignature OnPrepareTimerHandleDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPhaseTimerHandleSignature OnActionTimerHandleDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnKilledCounterDelegate OnEnemyKilledCountDelegate;
+
+	/** end Delegate */
 
 	UFUNCTION(BlueprintCallable, Category = "StageInfo|PreparePhase")
 	void PreparePhaseCountdown();
@@ -75,25 +90,14 @@ public :
 	UFUNCTION()
 	void EnemyKilledCount();
 
-	UPROPERTY(BlueprintAssignable)
-	FOnPhaseTimerHandleSignature OnPrepareTimerHandleDelegate;
+	void NotifyActorDestroyed(const AActor* DestroyedActor);
 
-	UPROPERTY(BlueprintAssignable)
-	FOnPhaseTimerHandleSignature OnActionTimerHandleDelegate;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnKilledCounterDelegate OnEnemyKilledCountDelegate;
-
-	FOnPhaseStateHandleSignature OnActionPhaseDelegate;
-	FOnPhaseStateHandleSignature OnTimeOutDelegate;
-	FOnPhaseStateHandleSignature OnEnemyKilledDelegate;
-	
 protected :
 	FTimerHandle CountdownHandle;
 	
 	int32 Timer = 0;
 	int32 KilledCount = 0;
-
+	int32 TargetKilledCount = 0;
 	void TimerCountdown();
 
 	bool bPreparePhase = true;
