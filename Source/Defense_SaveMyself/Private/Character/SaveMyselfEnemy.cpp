@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetComponents/EffectWidgetComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Defense_SaveMyself/Defense_SaveMyself.h"
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
@@ -27,6 +28,10 @@ void ASaveMyselfEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetCapsuleComponent()->SetCollisionObjectType(EnemyCollision);
+	GetMesh()->SetCollisionObjectType(EnemyCollision);
+	BlackboardInitialize();
+
 	if (EffectWidgetComponentClass)
 	{
 		EffectWidgetComponent = NewObject<UEffectWidgetComponent>(this, EffectWidgetComponentClass);
@@ -34,7 +39,6 @@ void ASaveMyselfEnemy::BeginPlay()
 		EffectWidgetComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
 		EffectWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 	}
-	BlackboardInitialize();
 
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
