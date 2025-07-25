@@ -58,4 +58,7 @@ private :
 
 	UPROPERTY(EditAnywhere, Category = "Preview")
 	UMaterialInstance* CannotPlaceMaterial;
+
+	UPROPERTY(EditDefaultsOnly)
+	FVector SpawnZeroVector = FVector::ZeroVector;
 };

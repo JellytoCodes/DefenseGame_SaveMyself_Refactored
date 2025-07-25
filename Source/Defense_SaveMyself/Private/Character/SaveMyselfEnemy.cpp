@@ -14,7 +14,6 @@
 ASaveMyselfEnemy::ASaveMyselfEnemy()
 {
 	EnemyComponent = CreateDefaultSubobject<UNormalEnemyFSM>("EnemyFSMComponent");
-
 }
 
 void ASaveMyselfEnemy::PossessedBy(AController* NewController)

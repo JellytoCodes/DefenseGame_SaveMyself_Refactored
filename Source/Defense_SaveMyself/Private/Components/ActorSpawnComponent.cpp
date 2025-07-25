@@ -131,7 +131,7 @@ void UActorSpawnComponent::ConfirmPlacement()
 
 void UActorSpawnComponent::SpawnedProjectile() const
 {
-	const FVector Location = GetOwner()->GetActorLocation();
+	const FVector Location = GetOwner()->GetActorLocation() + SpawnZeroVector;
 	const FRotator Rotation = GetOwner()->GetActorRotation();
 
 	FActorSpawnParameters SpawnParams;

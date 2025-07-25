@@ -77,7 +77,11 @@ public :
 	UPROPERTY(BlueprintAssignable, Category = "Subsystem|ExportData")
 	FExportItemDataDelegate ExportItemDataDelegate;
 
+	UFUNCTION(BlueprintPure)
+	bool GetWarehouseEntrance() const { return bWarehouseEntrance; }
 
+	UFUNCTION(BlueprintCallable)
+	void SetWarehouseEntrance(const bool InIsEntrance) { bWarehouseEntrance = InIsEntrance; }
 
 protected :	
 
@@ -96,6 +100,8 @@ protected :
 	TArray<FWidgetSlotDataInfo> PlayerQuickSlotData;
 
 	float CurrentBagWeight = 0;
+
+	bool bWarehouseEntrance = false;
 };
 
 template <typename T>

@@ -42,9 +42,6 @@ void ASpawnActor::Destroyed()
 void ASpawnActor::DamagedEvent_Implementation(const float Damage)
 {
 	CurrentHP -= Damage;
-
-	float GetHPState = CurrentHP/TargetHP;
-
 	if (CurrentHP <= 0)
 	{
 		Destroy();

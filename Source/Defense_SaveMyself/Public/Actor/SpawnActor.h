@@ -37,4 +37,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float TargetHP = 20;
+
+	float CurrentHP = 0;
 };

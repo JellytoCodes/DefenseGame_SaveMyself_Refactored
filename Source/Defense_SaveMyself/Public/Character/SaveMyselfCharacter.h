@@ -4,12 +4,11 @@
 #include "Character/SaveMyselfCharacterBase.h"
 #include "SaveMyselfCharacter.generated.h"
 
+class UActorSpawnComponent;
+class UConfirmPlacedWidgetComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStageResultSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerLifeDelegate, int32, InHP);
-
-class UActorSpawnComponent;
-class UConfirmPlacedWidget;
 
 UCLASS()
 class DEFENSE_SAVEMYSELF_API ASaveMyselfCharacter : public ASaveMyselfCharacterBase
@@ -40,11 +39,11 @@ protected :
 	TObjectPtr<UActorSpawnComponent> ActorSpawnComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "ConfirmWidgetComponent")
-	TSubclassOf<UConfirmPlacedWidget> ConfirmPlacedWidgetComponentClass;
+	TSubclassOf<UConfirmPlacedWidgetComponent> ConfirmPlacedWidgetComponentClass;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ConfirmWidgetComponent")
-	TObjectPtr<UConfirmPlacedWidget> ConfirmPlacedWidgetComponent;
+	TObjectPtr<UConfirmPlacedWidgetComponent> ConfirmPlacedWidgetComponent;
 
 	void OnStageDefeatBroadCast() const;
 	void OnStageVictoryBroadCast() const;

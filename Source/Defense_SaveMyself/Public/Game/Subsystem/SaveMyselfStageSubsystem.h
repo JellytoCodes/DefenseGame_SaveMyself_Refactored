@@ -57,7 +57,6 @@ public :
 
 	UPROPERTY(BlueprintAssignable)
 	FOnKilledCounterDelegate OnEnemyKilledCountDelegate;
-
 	/** end Delegate */
 
 	UFUNCTION(BlueprintCallable, Category = "StageInfo|PreparePhase")
@@ -86,6 +85,10 @@ public :
 
 	UFUNCTION(BlueprintPure, Category = "StageInfo")
 	FStageQuestInfo GetStageQuestInfo() const;
+
+	UFUNCTION(BlueprintPure, Category = "StageStatus")
+	bool GetIsPreparePhase() const {return bPreparePhase; }
+	bool GetIsActionPhase() const {return bActionPhase; }
 
 	UFUNCTION()
 	void EnemyKilledCount();

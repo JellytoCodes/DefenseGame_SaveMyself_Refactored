@@ -21,4 +21,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAnimMontage> DeathAnim;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsDead;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsHitReact;
 };

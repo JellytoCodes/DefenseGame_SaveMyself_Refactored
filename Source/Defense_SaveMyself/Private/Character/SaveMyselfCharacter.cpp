@@ -4,7 +4,7 @@
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 #include "Player/SaveMyselfPlayerController.h"
 #include "UI/HUD/SaveMyselfHUD.h"
-#include "UI/WidgetComponents/ConfirmPlacedWidget.h"
+#include "UI/WidgetComponents/ConfirmPlacedWidgetComponent.h"
 
 
 ASaveMyselfCharacter::ASaveMyselfCharacter()
@@ -20,7 +20,7 @@ void ASaveMyselfCharacter::BeginPlay()
 
 	if (ConfirmPlacedWidgetComponentClass)
 	{
-		ConfirmPlacedWidgetComponent = NewObject<UConfirmPlacedWidget>(this, ConfirmPlacedWidgetComponentClass);
+		ConfirmPlacedWidgetComponent = NewObject<UConfirmPlacedWidgetComponent>(this, ConfirmPlacedWidgetComponentClass);
 		ConfirmPlacedWidgetComponent->RegisterComponent();
 		ConfirmPlacedWidgetComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
 		ConfirmPlacedWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
