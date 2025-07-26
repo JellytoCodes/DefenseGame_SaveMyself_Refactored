@@ -6,6 +6,9 @@
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "DrawDebugHelpers.h"
+#include "Character/SaveMyselfCharacter.h"
+#include "Defense_SaveMyself/Defense_SaveMyself.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Player/SaveMyselfPlayerController.h"
 
 UActorSpawnComponent::UActorSpawnComponent()
@@ -36,11 +39,11 @@ void UActorSpawnComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 			float SnappedX = FMath::GridSnap(HitResult.ImpactPoint.X, GridSize);
 			float SnappedY = FMath::GridSnap(HitResult.ImpactPoint.Y, GridSize);
 		
-			FVector ConfirmLocation(SnappedX, SnappedY, HitResult.ImpactPoint.Z);
+			FVector ConfirmLocation(SnappedX, SnappedY, HitResult. ImpactPoint.Z);
 
 			PreviewActor->SetActorLocation(ConfirmLocation);
 			PreviewActor->SetActorRotation(FRotator::ZeroRotator);
-
+		
 			bCanPlaceConfirm = true;
 			SetGhostMaterial(bCanPlaceConfirm);
 		}
@@ -100,6 +103,8 @@ void UActorSpawnComponent::SetGhostMaterial(const bool bCanPlace) const
 		if (Mesh)
 		{
 			Mesh->SetMaterial(0, bCanPlace ? CanPlaceMaterial : CannotPlaceMaterial);
+			Mesh->SetMaterial(1, bCanPlace ? CanPlaceMaterial : CannotPlaceMaterial);
+			Mesh->SetMaterial(2, bCanPlace ? CanPlaceMaterial : CannotPlaceMaterial);
 		}
 	}
 }
@@ -109,7 +114,11 @@ bool UActorSpawnComponent::TraceToGround(FHitResult& HitResult) const
 	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (!PC) return false;
 
-	return PC->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel1), false, HitResult);
+	if (PC->GetHitResultUnderCursor(FloorActor, false, HitResult))
+	{
+		if (HitResult.GetActor()->ActorHasTag("Floor")) return true;
+	}
+	return false;
 }
 
 void UActorSpawnComponent::ConfirmPlacement()
@@ -131,16 +140,24 @@ void UActorSpawnComponent::ConfirmPlacement()
 
 void UActorSpawnComponent::SpawnedProjectile() const
 {
-	const FVector Location = GetOwner()->GetActorLocation() + SpawnZeroVector;
-	const FRotator Rotation = GetOwner()->GetActorRotation();
+	const ASaveMyselfCharacter* PlayerOwner = Cast<ASaveMyselfCharacter>(GetOwner());
+	if (!PlayerOwner) return;
+
+	const FVector Location = PlayerOwner->GetMesh()->GetSocketLocation(FName("armRightSocket"));
+
+	FHitResult HitResult;
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (!PC || !PC->GetHitResultUnderCursor(ECC_Visibility, false, HitResult)) return;
+
+	const FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Location, HitResult.ImpactPoint);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
+	AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, LookAtRotation, SpawnParams);
+	if (!ProjectileActor) return;
 
 	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
-
-	ProjectileActor->SetLifeSpan(5.f);
+	ProjectileActor->SetLifeSpan(3.f);
 }
 
 void UActorSpawnComponent::SpawnedTrapAndStructure()
@@ -161,6 +178,8 @@ void UActorSpawnComponent::SpawnedTrapAndStructure()
 	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
 	StructureActor->SetStructureHP(SpawnItemData.EffectValue);
 
+	if (SpawnItemData.ItemType == EItemTypes::Structure) StructureActor->Tags.Add("Structure");
+	
 	SpawnItemData = FItemInformation();
 
 	DisableEquippedItem();

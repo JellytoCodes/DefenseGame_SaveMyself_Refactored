@@ -35,7 +35,7 @@ protected :
 	virtual void BeginPlay() override;
 	virtual void InitializeCharacterInfo() override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpawnActorComponent")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SpawnActorComponent")
 	TObjectPtr<UActorSpawnComponent> ActorSpawnComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "ConfirmWidgetComponent")

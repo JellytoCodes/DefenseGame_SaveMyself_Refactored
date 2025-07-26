@@ -26,7 +26,7 @@ protected:
 	void PreparePhaseCollisionSet() const;
 	void ActionPhaseCollisionSet() const;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UEnemySpawnerComponent> EnemySpawnerComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category ="TargetingMode")
