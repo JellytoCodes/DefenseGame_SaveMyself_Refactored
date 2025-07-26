@@ -10,11 +10,11 @@ ASaveMyselfActor::ASaveMyselfActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
-	SetRootComponent(BoxCollision);
-
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>("ItemMesh");
-	ItemMesh->SetupAttachment(RootComponent);
+	SetRootComponent(ItemMesh);
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
+	BoxCollision->SetupAttachment(RootComponent);
 
 	ActorEffectComponent = CreateDefaultSubobject<UActorEffectComponent>("EffectComponent");
 
