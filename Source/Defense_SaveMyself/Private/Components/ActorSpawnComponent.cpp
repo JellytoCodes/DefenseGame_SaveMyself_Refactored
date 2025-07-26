@@ -8,7 +8,6 @@
 #include "DrawDebugHelpers.h"
 #include "Character/SaveMyselfCharacter.h"
 #include "Defense_SaveMyself/Defense_SaveMyself.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "Player/SaveMyselfPlayerController.h"
 
 UActorSpawnComponent::UActorSpawnComponent()
@@ -144,19 +143,14 @@ void UActorSpawnComponent::SpawnedProjectile() const
 	if (!PlayerOwner) return;
 
 	const FVector Location = PlayerOwner->GetMesh()->GetSocketLocation(FName("armRightSocket"));
-
-	FHitResult HitResult;
-	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	if (!PC || !PC->GetHitResultUnderCursor(ECC_Visibility, false, HitResult)) return;
-
-	const FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Location, HitResult.ImpactPoint);
+	const FRotator Rotation = PlayerOwner->GetMesh()->GetSocketRotation(FName("armRightSocket"));
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, LookAtRotation, SpawnParams);
-	if (!ProjectileActor) return;
+	AActor* ProjectileActor = GetWorld()->SpawnActor<AActor>(SpawnItemData.ItemClass, Location, Rotation, SpawnParams);
 
 	ConfirmActorSpawnDelegate.Broadcast(SpawnItemData);
+
 	ProjectileActor->SetLifeSpan(3.f);
 }
 
