@@ -8,5 +8,8 @@ UCLASS()
 class DEFENSE_SAVEMYSELF_API USaveMyselfSaveGame : public USaveGame
 {
 	GENERATED_BODY()
-	
+
+public :
+	UPROPERTY(BlueprintReadOnly)
+	FName SaveStage;
 };

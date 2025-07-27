@@ -1,7 +1,10 @@
 
 #include "Game/SaveMyselfGameModeBase.h"
+
+#include "Game/SaveMyselfSaveGame.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
+#include "Kismet/GameplayStatics.h"
 
 void ASaveMyselfGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
@@ -29,5 +32,16 @@ void ASaveMyselfGameModeBase::InitGame(const FString& MapName, const FString& Op
 			}
 			break;
 		}
+	}
+
+	SaveStage(StageName);
+}
+
+void ASaveMyselfGameModeBase::SaveStage(const FName StageName)
+{
+	if (USaveMyselfSaveGame* SaveGame = Cast<USaveMyselfSaveGame>(UGameplayStatics::CreateSaveGameObject(USaveMyselfSaveGame::StaticClass())))
+	{
+		SaveGame->SaveStage = StageName;
+		UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("SaveSlot"), 0);
 	}
 }

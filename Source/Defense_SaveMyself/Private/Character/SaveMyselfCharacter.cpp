@@ -81,6 +81,7 @@ void ASaveMyselfCharacter::OnStageVictoryBroadcast() const
 		StageSubsystem->ClearCountdown();
 		OnStageVictoryDelegate.Broadcast();
 		SetViewWinCamera();
+		StageSubsystem->SaveNextStage();
 	}
 	HideHUD();
 }

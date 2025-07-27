@@ -20,6 +20,8 @@ public :
 
 	const USaveMyselfStageInfo* GetStageInfoAsset() const { return StageInfoAsset; }
 
+	static void SaveStage(const FName StageName);
+
 protected :
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game Setup")

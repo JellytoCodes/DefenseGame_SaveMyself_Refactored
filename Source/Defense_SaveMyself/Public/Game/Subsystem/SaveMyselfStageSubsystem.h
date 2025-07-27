@@ -95,6 +95,8 @@ public :
 
 	void NotifyActorDestroyed(const AActor* DestroyedActor);
 
+	void SaveNextStage();
+
 protected :
 	FTimerHandle CountdownHandle;
 	

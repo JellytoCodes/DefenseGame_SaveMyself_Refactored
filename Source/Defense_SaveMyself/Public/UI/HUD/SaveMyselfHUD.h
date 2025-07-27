@@ -7,9 +7,7 @@
 #include "SaveMyselfHUD.generated.h"
 
 class USavemyselfUserWidget;
-/**
- * 
- */
+
 UCLASS()
 class DEFENSE_SAVEMYSELF_API ASaveMyselfHUD : public AHUD
 {

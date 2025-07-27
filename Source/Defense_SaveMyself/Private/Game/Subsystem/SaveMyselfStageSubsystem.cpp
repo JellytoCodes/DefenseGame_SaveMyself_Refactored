@@ -1,6 +1,9 @@
 
 #include "Game/Subsystem/SaveMyselfStageSubsystem.h"
 
+#include "Game/SaveMyselfSaveGame.h"
+#include "Kismet/GameplayStatics.h"
+
 void USaveMyselfStageSubsystem::BuildCache(const USaveMyselfStageInfo* StageAsset)
 {
 	if (IsValid(StageAsset))
@@ -119,5 +122,14 @@ void USaveMyselfStageSubsystem::NotifyActorDestroyed(const AActor* DestroyedActo
 			OnEnemyKilledDelegate.Broadcast();
 		}
 		OnEnemyKilledCountDelegate.Broadcast(KilledCount);
+	}
+}
+
+void USaveMyselfStageSubsystem::SaveNextStage()
+{
+	if (USaveMyselfSaveGame* SaveGame = Cast<USaveMyselfSaveGame>(UGameplayStatics::CreateSaveGameObject(USaveMyselfSaveGame::StaticClass())))
+	{
+		SaveGame->SaveStage = CurrentStageInfo.NextStage;
+		UGameplayStatics::SaveGameToSlot(SaveGame, TEXT("SaveSlot"), 0);
 	}
 }
