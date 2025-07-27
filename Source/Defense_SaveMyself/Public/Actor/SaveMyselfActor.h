@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -25,6 +23,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetStructureHP(const float InStructureHP);
 
+	void InitializeSaveMyselfActor();
+
 	UFUNCTION(BlueprintPure)
 	FItemInformation& GetItemInfo() const { return *ItemInfo; }
 
@@ -48,9 +48,13 @@ protected :
 	class UAIPerceptionStimuliSourceComponent* StimuliSourceComp;
 
 	float StructureHP = 0;
+	float CurrentHP = 0;
 
 	FItemInformation* ItemInfo;
 
 	UPROPERTY(EditDefaultsOnly)
 	FName ItemName;
+
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> DynamicMaterial;
 };

@@ -37,6 +37,7 @@ struct FWidgetSlotDataInfo
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FItemDataUpdateSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FExportItemDataDelegate, const FItemInformation&, UseItem);
+
 UCLASS()
 class DEFENSE_SAVEMYSELF_API USaveMyselfItemSubsystem : public UWorldSubsystem
 {

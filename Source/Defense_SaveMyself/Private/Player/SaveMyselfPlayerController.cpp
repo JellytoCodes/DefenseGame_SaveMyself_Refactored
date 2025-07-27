@@ -4,6 +4,8 @@
 #include "Character/SaveMyselfCharacter.h"
 #include "Components/ActorSpawnComponent.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "UI/HUD/SaveMyselfHUD.h"
 
 void ASaveMyselfPlayerController::BeginPlay()
 {
@@ -92,7 +94,14 @@ void ASaveMyselfPlayerController::LookNTurn(const FInputActionValue& InputAction
 
 void ASaveMyselfPlayerController::ViewPause()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf(TEXT("ViewPause")));
+	if (!bIsPaused)
+	{
+		EnablePause();
+	}
+	else
+	{
+		DisablePause();
+	}
 }
 
 void ASaveMyselfPlayerController::Confirm()
@@ -190,4 +199,24 @@ void ASaveMyselfPlayerController::DisableKeyIndex()
 {
 	KeyIndex = -1;
 	ExportQuickSlotIndexDelegate.Broadcast(KeyIndex);
+}
+
+void ASaveMyselfPlayerController::EnablePause()
+{
+	if (ASaveMyselfHUD* SaveMyselfHUD = Cast<ASaveMyselfHUD>(GetHUD()))
+	{
+		bIsPaused = true;
+		SaveMyselfHUD->VisiblePauseMenu();
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+	}
+}
+
+void ASaveMyselfPlayerController::DisablePause()
+{
+	if (ASaveMyselfHUD* SaveMyselfHUD = Cast<ASaveMyselfHUD>(GetHUD()))
+	{
+		bIsPaused = false;
+		SaveMyselfHUD->HidePauseMenu();
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+	}
 }

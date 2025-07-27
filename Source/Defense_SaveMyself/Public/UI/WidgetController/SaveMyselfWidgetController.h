@@ -9,7 +9,6 @@ class UWrapBox;
 struct FWidgetSlotDataInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlotDataInfoSigniture);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSortPlayerQuickSlotSignature);
 
 UCLASS(BlueprintType, Blueprintable)
 class DEFENSE_SAVEMYSELF_API USaveMyselfWidgetController : public UObject
@@ -26,6 +25,8 @@ public :
 
 	UFUNCTION(BlueprintCallable, Category = "UI|Warehouse")
 	const float GetCurrentBagWeight() const;
+	/** Warehouse */
+
 
 	/** Player QuickSlot */
 	UFUNCTION(BlueprintCallable, Category = "UI|PlayerQuickSlot")
@@ -36,6 +37,7 @@ public :
 
 	UFUNCTION(BlueprintCallable, Category = "UI|PlayerQuickSlot")
 	void UpdateRemovePlayerItemData(const FWidgetSlotDataInfo& UpdateItem);
+	/** */
 
 	FOnSlotDataInfoSigniture OnSlotDataInfoDelegate;
 };

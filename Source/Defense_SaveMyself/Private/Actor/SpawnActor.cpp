@@ -43,9 +43,7 @@ void ASpawnActor::DamagedEvent_Implementation(const float Damage)
 {
 	CurrentHP -= Damage;
 
-	//TODO : 구조물 체력에 따라 상태 변환 구현하기
-	float GetHPState = CurrentHP/TargetHP;
-
+	UpdateHPProgressBar();
 	if (CurrentHP <= 0)
 	{
 		Destroy();

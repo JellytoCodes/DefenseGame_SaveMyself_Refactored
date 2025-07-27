@@ -18,6 +18,13 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfHUD : public AHUD
 public :
 	void InitPlayerQuickSlot();
 	void InitStageInfoWidget();
+	void InitPauseMenu();
+
+	void VisiblePauseMenu() const;
+
+	void HidePlayerQuickSlot() const;
+	void HideStageInfoWidget() const;
+	void HidePauseMenu() const;
 
 private :
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget Setting", meta = (AllowPrivateAccess = "true"))
@@ -31,5 +38,11 @@ private :
 
 	UPROPERTY()
 	TObjectPtr<USavemyselfUserWidget> StageInfoInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget Setting", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<USavemyselfUserWidget> PauseMenuClass;
+
+	UPROPERTY()
+	TObjectPtr<USavemyselfUserWidget> PauseMenuInstance;
 
 };

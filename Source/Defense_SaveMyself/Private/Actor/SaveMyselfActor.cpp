@@ -27,19 +27,21 @@ void ASaveMyselfActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(StimuliSourceComp)
-	{
-		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
-	}
-	if (USaveMyselfItemSubsystem* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
-	{
-		ItemInfo = ItemSubsystem->GetItemInfo(ItemName);
-	}
+	InitializeSaveMyselfActor();
 }
 
 bool ASaveMyselfActor::GetDamaged(const float InDamage)
 {
-	if ((StructureHP -= InDamage) <= 0)
+	CurrentHP -= InDamage;
+	const float HPPercent = FMath::Clamp(CurrentHP/StructureHP, 0.f, 1.f);
+
+	if (DynamicMaterial)
+	{
+		const float Opacity = FMath::Lerp(0.3f, 1.f, HPPercent);
+		DynamicMaterial->SetScalarParameterValue(FName("Opacity"), Opacity);
+	}
+
+	if (CurrentHP <= 0)
 	{
 		Destroy();
 		return true;
@@ -50,4 +52,26 @@ bool ASaveMyselfActor::GetDamaged(const float InDamage)
 void ASaveMyselfActor::SetStructureHP(const float InStructureHP)
 {
 	StructureHP = InStructureHP;
+	CurrentHP = InStructureHP;
+}
+
+void ASaveMyselfActor::InitializeSaveMyselfActor()
+{
+	if(StimuliSourceComp)
+	{
+		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
+	}
+	if (USaveMyselfItemSubsystem* ItemSubsystem = USaveMyselfItemSubsystem::GetItemSubSystem(this))
+	{
+		ItemInfo = ItemSubsystem->GetItemInfo(ItemName);
+	}
+
+	if (ItemMesh)
+	{
+		if (UMaterialInterface* BaseMaterial = ItemMesh->GetMaterial(0))
+		{
+			DynamicMaterial = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+			ItemMesh->SetMaterial(0, DynamicMaterial);
+		}
+	}
 }

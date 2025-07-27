@@ -15,6 +15,12 @@ class DEFENSE_SAVEMYSELF_API ASpawnActor : public AActor, public ICombatInterfac
 public:	
 	ASpawnActor();
 
+	UFUNCTION(BlueprintPure)
+	float GetCurrentHP() const { return CurrentHP; }
+
+	UFUNCTION(BlueprintPure)
+	float GetTargetHP() const { return TargetHP; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
@@ -25,6 +31,9 @@ protected:
 
 	void PreparePhaseCollisionSet() const;
 	void ActionPhaseCollisionSet() const;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHPProgressBar();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UEnemySpawnerComponent> EnemySpawnerComponent;

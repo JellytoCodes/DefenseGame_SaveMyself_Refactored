@@ -41,13 +41,23 @@ protected :
 	UPROPERTY(EditDefaultsOnly, Category = "ConfirmWidgetComponent")
 	TSubclassOf<UConfirmPlacedWidgetComponent> ConfirmPlacedWidgetComponentClass;
 
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ConfirmWidgetComponent")
 	TObjectPtr<UConfirmPlacedWidgetComponent> ConfirmPlacedWidgetComponent;
 
-	void OnStageDefeatBroadCast() const;
-	void OnStageVictoryBroadCast() const;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<ACameraActor> WinCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<ACameraActor> DefeatCamera;
 
 private :
 	int32 PlayerHP = 5;
+
+	void OnStageDefeatBroadcast() const;
+	void OnStageVictoryBroadcast() const;
+
+	void SetViewWinCamera() const;
+	void SetViewDefeatCamera() const;
+
+	void HideHUD() const;
 };
