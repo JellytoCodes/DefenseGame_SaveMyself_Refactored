@@ -1,16 +1,19 @@
-Binaries
-DerivedDataCache
-Intermediate
-Saved
-Build
+# Unreal Engine 불필요 폴더
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Windows/
 
-.vscode
-.vs
-*.VC.db
-*.opensdf
-*.opendb
-*.sdf
+# Visual Studio 관련
+.vs/
+.vscode/
 *.sln
-*.suo
-*.xcodeproj
-*.xcworkspace
+*.VC.db
+*.log
+*.tmp
+*.user
+
+# OS 임시파일
+.DS_Store
+Thumbs.db
