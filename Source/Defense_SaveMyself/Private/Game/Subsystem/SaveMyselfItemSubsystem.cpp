@@ -62,6 +62,8 @@ void USaveMyselfItemSubsystem::BuildCache(const USaveMyselfStageInfo* StageAsset
 			WarehouseSlotInfo[i].Description = Row->Description;
 			WarehouseSlotInfo[i].TypeDisplay = Row->TypeDisplay;
 			WarehouseSlotInfo[i].ItemWeight = Row->ItemWeight;
+			WarehouseSlotInfo[i].ItemType = Row->ItemType;
+			WarehouseSlotInfo[i].ItemEffect = Row->EffectValue;
 			i++;
 		}
 	}

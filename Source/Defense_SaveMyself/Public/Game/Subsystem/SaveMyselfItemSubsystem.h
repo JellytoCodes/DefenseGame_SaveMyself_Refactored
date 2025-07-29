@@ -22,6 +22,9 @@ struct FWidgetSlotDataInfo
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ItemSlot Data")
 	float ItemWeight;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ItemSlot Data")
+	float ItemEffect;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
 	TObjectPtr<UTexture2D> ItemIcon;
 
@@ -33,6 +36,9 @@ struct FWidgetSlotDataInfo
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
 	FText TypeDisplay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemSlot Data")
+	EItemTypes ItemType;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FItemDataUpdateSignature);

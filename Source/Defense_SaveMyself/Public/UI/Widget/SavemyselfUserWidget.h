@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Data/SaveMyselfItemInfo.h"
 #include "Game/Subsystem/SaveMyselfItemSubsystem.h"
 #include "SavemyselfUserWidget.generated.h"
 
