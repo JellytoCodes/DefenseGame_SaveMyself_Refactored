@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Character/SaveMyselfCharacterBase.h"
 #include "Data/SaveMyselfStageInfo.h"
-#include "Enemy/FSM/NormalEnemyFSM.h"
+#include "Enemy/Stats/NormalEnemyComponent.h"
 #include "SaveMyselfEnemy.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnDeathDelegate);
@@ -12,7 +12,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnDeathActorReturnDelegate, const AActor*);
 class UEffectWidgetComponent;
 class ANormalEnemyAIController;
 class UBehaviorTree;
-class UNormalEnemyFSM;
+class UNormalEnemyComponent;
 
 UCLASS()
 class DEFENSE_SAVEMYSELF_API ASaveMyselfEnemy : public ASaveMyselfCharacterBase
@@ -21,7 +21,7 @@ class DEFENSE_SAVEMYSELF_API ASaveMyselfEnemy : public ASaveMyselfCharacterBase
 
 public :
 	ASaveMyselfEnemy();
-	UNormalEnemyFSM* GetEnemyFSMComponent();
+	UNormalEnemyComponent* GetEnemyComponent();
 
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
@@ -56,7 +56,7 @@ protected :
 	virtual void Die() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	TObjectPtr<UNormalEnemyFSM> EnemyComponent;
+	TObjectPtr<UNormalEnemyComponent> EnemyComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;

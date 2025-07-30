@@ -3,7 +3,6 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Character/SaveMyselfCharacter.h"
 #include "Enemy/AIController/NormalEnemyAIController.h"
-#include "Enemy/FSM/NormalEnemyFSM.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetComponents/EffectWidgetComponent.h"
@@ -13,7 +12,7 @@
 
 ASaveMyselfEnemy::ASaveMyselfEnemy()
 {
-	EnemyComponent = CreateDefaultSubobject<UNormalEnemyFSM>("EnemyFSMComponent");
+	EnemyComponent = CreateDefaultSubobject<UNormalEnemyComponent>("EnemyComponent");
 }
 
 void ASaveMyselfEnemy::PossessedBy(AController* NewController)
@@ -167,7 +166,7 @@ void ASaveMyselfEnemy::SetIsPlayerState()
 	GetWorldTimerManager().ClearTimer(SlowMovementTime);
 }
 
-UNormalEnemyFSM* ASaveMyselfEnemy::GetEnemyFSMComponent()
+UNormalEnemyComponent* ASaveMyselfEnemy::GetEnemyComponent()
 {
 	return EnemyComponent;
 }

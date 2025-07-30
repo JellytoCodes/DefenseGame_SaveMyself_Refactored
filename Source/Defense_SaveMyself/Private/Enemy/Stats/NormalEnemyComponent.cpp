@@ -1,27 +1,27 @@
 
-#include "Enemy/FSM/NormalEnemyFSM.h"
+#include "Enemy/Stats/NormalEnemyComponent.h"
 #include "Character/SaveMyselfEnemy.h"
 #include "Engine/Engine.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-UNormalEnemyFSM::UNormalEnemyFSM()
+UNormalEnemyComponent::UNormalEnemyComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
 }
-void UNormalEnemyFSM::BeginPlay()
+void UNormalEnemyComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	if (EnemyInfoTable) InitializeEnemyInfo();
 }
 
-void UNormalEnemyFSM::EquipWeapon()
+void UNormalEnemyComponent::EquipWeapon()
 {
 
 }
 
-void UNormalEnemyFSM::InitializeEnemyInfo()
+void UNormalEnemyComponent::InitializeEnemyInfo()
 {
 	if (ASaveMyselfEnemy* OwnerPawn = Cast<ASaveMyselfEnemy>(GetOwner()))
 	{

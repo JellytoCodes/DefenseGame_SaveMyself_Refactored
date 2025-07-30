@@ -3,17 +3,17 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Data/SaveMyselfEnemyInfo.h"
-#include "NormalEnemyFSM.generated.h"
+#include "NormalEnemyComponent.generated.h"
 
 class UDataTable;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class DEFENSE_SAVEMYSELF_API UNormalEnemyFSM : public UActorComponent
+class DEFENSE_SAVEMYSELF_API UNormalEnemyComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
-	UNormalEnemyFSM();
+	UNormalEnemyComponent();
 
 	float GetAttackRange() const { return EnemyInformation.AttackRange;}
 
