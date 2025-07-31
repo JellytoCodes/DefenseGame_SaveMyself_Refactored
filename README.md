@@ -49,7 +49,6 @@ Source/Defense_SaveMyself/
 
 <br>
 
-## Author & Acknowledgements
+## Author
 **JellytoCodes – Programmer**  
-**Thanks To. 강상용 교수님**  
 
