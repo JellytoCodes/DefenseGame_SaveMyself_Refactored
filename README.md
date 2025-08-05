@@ -1,6 +1,5 @@
 # 🛡️ SaveMyself [Single-player Defence Survival Game]
-> “플레이어가 직접 컨트롤하는 디펜스를 만들어보고 싶다”는 아이디어에서 시작된 **싱글 플레이어 생존 디펜스** 게임입니다. 각 스테이지마다  
-> 구조물·함정을 배치하고, 제한된 자원으로 아이템을 구매해 몰려오는 적을 모두 처치하면 다음 스테이지로 진입합니다.
+> “플레이어가 직접 컨트롤하는 디펜스를 만들어보고 싶다”는 아이디어에서 시작된 **싱글 플레이어 생존 디펜스** 게임입니다.
 ---
 
 <br>
@@ -30,14 +29,14 @@ Source/Defense_SaveMyself/
 ├── Public/                # 헤더
 └── Private/               # 소스
     ├── Actor/             # 스테이지 오브젝트(구조물 등) ─ 비캐릭터 액터
-    ├── Character/         # 플레이어·Enemy 기반 클래스
+    ├── Character/         # 플레이어·Enemy 기반 Character 클래스
     ├── Components/        # 재사용 ActorComponent (Health, Spawn, Effect …)
-    ├── Data/              # 데이터 구조체·DataAsset 래퍼 
+    ├── Data/              # 데이터 구조체·DataAsset
     ├── Enemy/
     │   ├── AIController/  # Enemy 전용 AIController 구현
     │   └── Stats/         # Enemy 스탯 정의
     ├── Game/
-    │   └── Subsystem/     # Stage, Item 등 게임 전역 Subsystem
+    │   └── Subsystem/     # Stage, Item 등 WorldSubsystem
     ├── Interact/          # 상호작용 인터페이스·액터
     ├── Player/            # PlayerController, 입력 매핑
     └── UI/
