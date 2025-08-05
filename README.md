@@ -35,7 +35,7 @@ Source/Defense_SaveMyself/
     ├── Data/              # 데이터 구조체·DataAsset 래퍼 
     ├── Enemy/
     │   ├── AIController/  # Enemy 전용 AIController 구현
-    │   └── Stats/         # 몬스터 스탯 정의
+    │   └── Stats/         # Enemy 스탯 정의
     ├── Game/
     │   └── Subsystem/     # Stage, Item 등 게임 전역 Subsystem
     ├── Interact/          # 상호작용 인터페이스·액터
